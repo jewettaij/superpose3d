@@ -19,13 +19,13 @@ transformations in order to minimize the root-mean-squared-distance (RMSD)
 between corresponding points from either point cloud, where RMSD is defined as:
 
 ```
-   RMSD =  sqrt( (Sum_i  w_i * |X_i - c*(R*x_i + T)|^2)  /  (Sum_j w_j) )
+   RMSD = sqrt((Sum_i  w_i * |X_i - c*(Sum_j(R_ij*x_j) + T_i)|^2) / (Sum_j w_j))
 ```
 where:
 ```
-   T = a translation vector (a numpy array containing x,y,z offsets),
-   R = a rotation matrix    (a 3x3 numpy array),
-   c = a scalar             (a number)
+   T_i  = a translation vector (a numpy array containing x,y,z offsets),
+   R_ij = a rotation matrix    (a 3x3 numpy array),
+    c   = a scalar             (a number)
 ```
 This function returns a 4-tuple containing the optimal values of:
 ```
