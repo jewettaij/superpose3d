@@ -34,9 +34,10 @@ This function returns a 4-tuple containing the optimal values of:
 This function implements a more general variant of the method from this paper:
 R. Diamond, (1988)
 "A Note on the Rotational Superposition Problem",
- Acta Cryst. A44, pp. 211-216
+ Acta Cryst. A44, pp. 211-216.
 The version in the paper only considers rotation and translation and does not
 allow the coordinates of either object to be scaled (multiplied by a scalar).
+This version has been augmented slightly.
 
 
 ## Requirements
