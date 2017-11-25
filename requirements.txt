@@ -1,2 +1,0 @@
-superpose3d
-numpy>=1.0.0

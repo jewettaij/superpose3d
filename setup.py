@@ -24,7 +24,7 @@ setup(
 
   license='BSD',
 
-  classifiers=['Development Status :: 3 Alpha',
+  classifiers=['Development Status :: 3 - Alpha',
                'License :: OSI Approved :: BSD License',
                'Environment :: Console',
                'Operating System :: MacOS :: MacOS X',
