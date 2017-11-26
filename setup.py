@@ -14,9 +14,9 @@ setup(
 
   url='https://github.com/jewettaij/superpose3d',
 
-  download_url='https://github.com/jewettaij/superpose3d/archive/v0.0.2.zip',
+  download_url='https://github.com/jewettaij/superpose3d/archive/v0.0.3.zip',
 
-  version='0.0.2',
+  version='0.0.3',
 
   # BSD 3-Clause License:
   # - http://choosealicense.com/licenses/bsd-3-clause
@@ -29,10 +29,9 @@ setup(
                'Environment :: Console',
                'Operating System :: MacOS :: MacOS X',
                'Operating System :: POSIX :: Linux',
-               'Operating System :: Microsoft :: Windows'
+               'Operating System :: Microsoft :: Windows',
                'Programming Language :: Python',
                'Topic :: Scientific/Engineering'],
-  ],
 
   zip_safe=True,
   include_package_data=True
