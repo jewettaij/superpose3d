@@ -4,7 +4,7 @@ from numpy import linalg as LA
 
 def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
                 aaXm_orig,   # <-- coordinates for the "mobile" object
-                aWeights=[], # <-- optional weights for the calculation of RMSD
+                aWeights=None, #<- optional weights for the calculation of RMSD
                 allow_rescale=False): # <-- attempt to rescale mobile object?
     """
     Superpose3D() takes two lists of xyz coordinates, (same length) and attempts
@@ -25,7 +25,7 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
 
     assert(len(aaXf_orig) == len(aaXm_orig))
     N = len(aaXf_orig)
-    if len(aWeights) != N:
+    if (aWeights == None) or (len(aWeights) == 0):
         aWeights = np.full(N,1.0)
 
     # Find the center of mass of each object:
@@ -177,7 +177,6 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
                 aaXf[n][d] *= Rgf
                 aaXm[n][d] *= Rgm
 
-
     # Now, finally compute the RMSD between the two coordinate sets:
     # First compute E0 from equation 24 of the paper
     E0 = 0.0
@@ -185,7 +184,7 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
         for d in range(0, 3):
             # (remember to include the scale factor "c" that we inserted)
             E0 += aWeights[n] * ((aaXf[n][d] - c*aaXm[n][d])**2)
-    sum_sqr_dist = E0 - 2.0*pPp*c
+    sum_sqr_dist = E0 - 2.0*pPp
     if sum_sqr_dist < 0.0:
         sum_sqr_dist = 0.0
     rmsd = sqrt(sum_sqr_dist/sum_weights)
