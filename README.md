@@ -18,11 +18,11 @@ them using **rotations**, **translations**, and (optionally) **scale**
 transformations in order to minimize the root-mean-squared-distance (RMSD)
 between corresponding points from either point cloud, where RMSD is defined as:
 ```
-   RMSD = sqrt((Sum_i  w_i * |X_i - c*Sum_j(R_ij*(x_j + T_j))|^2) / (Sum_j w_j))
+   RMSD = sqrt((Sum_i  w_i * |X_i - Sum_j(c*R_ij*x_j + T_i))|^2) / (Sum_j w_j))
 ```
 For the specific case of equal weights:
 ```
-   RMSD = sqrt(( Sum_i |X_i - c*Sum_j( R_ij*(x_j + T_j) )|^2 ) / N)
+   RMSD = sqrt(( Sum_i |X_i - Sum_j(c*R_ij*x_j + T_i) )|^2 ) / N)
 ```
 ...where:
 ```

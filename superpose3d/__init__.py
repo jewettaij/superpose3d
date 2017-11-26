@@ -147,24 +147,18 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     aaRotate[2][1] = 2*(p[1]*p[2] + p[0]*p[3]);
     aaRotate[0][2] = 2*(p[0]*p[2] + p[1]*p[3]);
     aaRotate[2][0] = 2*(p[0]*p[2] - p[1]*p[3]);
-
-    # Calculate the translational offset:
-    aTranslate = np.empty(3)
-    for d in range(0,3):
-        aTranslate[d] = aCenter_f[d] - aCenter_m[d]
-
     
-    # LAST STEP: Decide the scale factor, c
-    Waxaixai = 0.0
-    WaxaiXai = 0.0
-    for a in range(0, N):
-        for i in range(0, 3):
-            Waxaixai += aWeights[a] * aaXm[a][i] * aaXm[a][i]
-            WaxaiXai += aWeights[a] * aaXm[a][i] * aaXf[a][i]
     pPp = eval_max
 
+    # Optional: Decide the scale factor, c
     c = 1.0   # by default, don't rescale the coordinates
     if allow_rescale:
+        Waxaixai = 0.0
+        WaxaiXai = 0.0
+        for a in range(0, N):
+            for i in range(0, 3):
+                Waxaixai += aWeights[a] * aaXm[a][i] * aaXm[a][i]
+                WaxaiXai += aWeights[a] * aaXm[a][i] * aaXf[a][i]
         c = (WaxaiXai + pPp) / Waxaixai
         # Recall that we previously divided the two sets of coordinates by Rgm
         # and Rgf respectively. (I thought it might improve numerical stability)
@@ -177,7 +171,7 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
                 aaXf[n][d] *= Rgf
                 aaXm[n][d] *= Rgm
 
-    # Now, finally compute the RMSD between the two coordinate sets:
+    # Finally compute the RMSD between the two coordinate sets:
     # First compute E0 from equation 24 of the paper
     E0 = 0.0
     for n in range(0, N):
@@ -188,6 +182,35 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     if sum_sqr_dist < 0.0:
         sum_sqr_dist = 0.0
     rmsd = sqrt(sum_sqr_dist/sum_weights)
+
+    # Lastly, calculate the translational offset:
+    # Recall that:
+    #RMSD=sqrt((Sum_i  w_i * |X_i - Sum_j(c*R_ij*x_j + T_i))|^2) / (Sum_j w_j))
+    #    =sqrt((Sum_i  w_i * |X_i - x_i')|^2) / (Sum_j w_j))
+    #  where
+    # x_i' = Sum_j(c*R_ij*x_j) + T_i
+    #      = Xcm_i + c*R_ij*(x_j - xcm_j)
+    #  and Xcm and xcm = center_of_mass for the frozen and mobile point clouds
+    #                  = aCenter_f[]       and       aCenter_m[],  respectively
+    # Hence:
+    #  T_i = Xcm_i - Sum_j c*R_ij*xcm_j  =  aTranslate[i]
+
+    aTranslate = np.empty(3)
+    for i in range(0,3):
+        aTranslate[i] = aCenter_f[i]
+        for j in range(0,3):
+            aTranslate[i] -= c*aaRotate[i][j]*aCenter_m[j]
+
+    # An alternate method to compute "aTranslate" using numpy matrices:
+    #Rmatrix = np.matrix(aaRotate)
+    #TcolumnVec = np.matrix(np.empty((3,1))) # 3x1 numpy matrix<->[[0],[0],[0]]
+    #for d in range(0,3):
+    #    TcolumnVec[d][0] = -aCenter_m[d]
+    #TcolumnVec = c * Rmatrix * TcolumnVec
+    #for d in range(0,3):
+    #    TcolumnVec[d][0] += aCenter_f[d]
+    # #Turn the column vector back into an ordinary numpy array of size 3:
+    #aTranslate = np.array(TcolumnVec.transpose())[0]
 
     return rmsd, aaRotate, aTranslate, c
 
