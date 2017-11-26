@@ -14,9 +14,9 @@ setup(
 
   url='https://github.com/jewettaij/superpose3d',
 
-  download_url='https://github.com/jewettaij/superpose3d/archive/v0.1.0.zip',
+  download_url='https://github.com/jewettaij/superpose3d/archive/v0.2.0.zip',
 
-  version='0.1.0',
+  version='0.2.0',
 
   # BSD 3-Clause License:
   # - http://choosealicense.com/licenses/bsd-3-clause
