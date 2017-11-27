@@ -46,6 +46,15 @@ This version has been augmented slightly to support scale transformations.  (I.E
 
 Note that if you enable scale transformations (i.e. if *allow_rescale=True*), you should be wary if the function returns a negative **c** value.  Negative **c** values correspond to inversions (reflections).  For this reason, if you are using this function to compare the conformations of molecules, you should probably set *allow_rescale=False*.  (When *allow_rescale=False*, only proper rotations are allowed, not reflections.)
 
+## Installation using pip
+
+    pip install .
+    pip install -r requirements.txt
+
+Later, you can uninstall superpose3d using:
+
+    pip uninstall superpose3d
+
 ## Requirements
 
 superpose3d depends on numpy
