@@ -1,8 +1,8 @@
-superpose3d
-===========
-
 [![Build Status](https://travis-ci.org/jewettaij/superpose3d.svg?branch=master)](https://travis-ci.org/jewettaij/superpose3d.svg?branch=master)
 
+
+superpose3d
+===========
 
 ##  Usage
 
