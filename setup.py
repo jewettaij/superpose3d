@@ -60,9 +60,9 @@ Note that if you enable scale transformations (i.e. if *allow_rescale=True*), yo
 
   url='https://github.com/jewettaij/superpose3d',
 
-  download_url='https://github.com/jewettaij/superpose3d/archive/v0.2.3.zip',
+  download_url='https://github.com/jewettaij/superpose3d/archive/v0.2.4.zip',
 
-  version='0.2.3',
+  version='0.2.4',
 
   # BSD 3-Clause License:
   # - http://choosealicense.com/licenses/bsd-3-clause
@@ -70,7 +70,7 @@ Note that if you enable scale transformations (i.e. if *allow_rescale=True*), yo
 
   license='BSD',
 
-  classifiers=['Development Status :: 3 - Alpha',
+  classifiers=['Development Status :: 4 - Beta',
                'License :: OSI Approved :: BSD License',
                'Environment :: Console',
                'Operating System :: MacOS :: MacOS X',

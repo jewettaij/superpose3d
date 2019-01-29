@@ -22,6 +22,8 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     paper only considers rotation and translation and does not allow the 
     coordinates of either object to be rescaled (multiplication by a scalar).
 
+    Additional documentation can be found in README.md.
+
     """
 
     assert(len(aaXf_orig) == len(aaXm_orig))
