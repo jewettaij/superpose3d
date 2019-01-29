@@ -28,7 +28,7 @@ between corresponding points from either point cloud, where RMSD is defined as:
 ```
    RMSD = sqrt((Sum_i  w_i * |X_i - Sum_j(c*R_ij*x_j + T_i))|^2) / (Sum_j w_j))
 ```
-For the specific case of equal weights:
+If *w_i=None*, equal weights are used.  In that case:
 ```
    RMSD = sqrt(( Sum_i |X_i - Sum_j(c*R_ij*x_j + T_i) )|^2 ) / N)
 ```
