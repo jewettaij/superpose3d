@@ -8,6 +8,7 @@ setup(
 
   description='Diamond\'s 1988 rotational superposition algorithm (+scale tranforms)',
   long_description='''Register 3-D point clouds using rotation, translation, and scale transformations.
+
 ##  Usage
 
 ```
@@ -49,7 +50,9 @@ R. Diamond, (1988)
 This version has been augmented slightly to support scale transformations.  (I.E. multiplication by scalars.  This can be useful for the registration of two different annotated volumetric 3-D images of the same object taken at different magnifications.)
 
 Note that if you enable scale transformations (i.e. if *allow_rescale=True*), you should be wary if the function returns a negative **c** value.  Negative **c** values correspond to inversions (reflections).  For this reason, if you are using this function to compare the conformations of molecules, you should probably set *allow_rescale=False*.  This will prevent matching a molecule with its stereoisomer.
-  ''',
+''',
+
+  long_description_content_type='text/markdown',
 
   author='Andrew Jewett',
 
@@ -57,9 +60,9 @@ Note that if you enable scale transformations (i.e. if *allow_rescale=True*), yo
 
   url='https://github.com/jewettaij/superpose3d',
 
-  download_url='https://github.com/jewettaij/superpose3d/archive/v0.2.2.zip',
+  download_url='https://github.com/jewettaij/superpose3d/archive/v0.2.3.zip',
 
-  version='0.2.2',
+  version='0.2.3',
 
   # BSD 3-Clause License:
   # - http://choosealicense.com/licenses/bsd-3-clause

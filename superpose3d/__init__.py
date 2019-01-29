@@ -7,11 +7,12 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
                 aWeights=None, #<- optional weights for the calculation of RMSD
                 allow_rescale=False): # <-- attempt to rescale mobile object?
     """
-    Superpose3D() takes two lists of xyz coordinates, (same length) and attempts
-    to superimpose them using rotations, translations, and (optionally) rescale 
-    operations in order to minimize the root-mean-squared-distance (RMSD)
-    between them.  These operations are intended to be applied to the 
-    "aaXm_orig" argument.  This function returns a tuple containing:
+    Superpose3D() takes two lists of xyz coordinates, (of the same length)
+    and attempts to superimpose them using rotations, translations, and 
+    (optionally) rescale operations in order to minimize the 
+    root-mean-squared-distance (RMSD) between them.  
+    These operations should be applied to the "aaXm_orig" argument.
+    This function returns a tuple containing:
       (RMSD, optimal_translation, optimal_rotation, and optimal_scale_factor)
     This function implements a more general variant of the method from:
     R. Diamond, (1988)
