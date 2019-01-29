@@ -4,7 +4,7 @@ setup(
   
   name='superpose3d',
 
-    packages=['superpose3d'],
+  packages=['superpose3d'],
 
   description='Diamond\'s 1988 rotational superposition algorithm (+scale tranforms)',
   long_description='''Register 3-D point clouds using rotation, translation, and scale transformations.
@@ -60,9 +60,13 @@ Note that if you enable scale transformations (i.e. if *allow_rescale=True*), yo
 
   url='https://github.com/jewettaij/superpose3d',
 
-  download_url='https://github.com/jewettaij/superpose3d/archive/v0.2.4.zip',
+  download_url='https://github.com/jewettaij/superpose3d/archive/v0.2.5.zip',
 
-  version='0.2.4',
+  version='0.2.5',
+
+
+  keywords=['registration', '3d', 'structure-comparison', 'molecular-structure',
+            'clem'],
 
   # BSD 3-Clause License:
   # - http://choosealicense.com/licenses/bsd-3-clause
