@@ -19,7 +19,7 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     Acta Cryst. A44, pp. 211-216
     This version has been augmented slightly.  The version in the original 
     paper only considers rotation and translation and does not allow the 
-    coordinates of either object to be rescaled (multiplicatied by a scalar).
+    coordinates of either object to be rescaled (multiplication by a scalar).
 
     """
 
