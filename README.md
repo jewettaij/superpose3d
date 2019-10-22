@@ -1,6 +1,5 @@
 [![Build Status](https://travis-ci.org/jewettaij/superpose3d.svg?branch=master)](https://travis-ci.org/jewettaij/superpose3d.svg?branch=master)
-[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
-
+[![License](https://img.shields.io/badge/License-MIT-green.svg)]
 
 superpose3d
 ===========
@@ -62,5 +61,4 @@ superpose3d depends on numpy
 
 ## License
 
-superpose3d is available under the terms of the open-source 3-clause
-[BSD license](LICENSE.md).
+superpose3d is available under the terms of the [MIT license](LICENSE.md).

@@ -60,22 +60,21 @@ Note that if you enable scale transformations (i.e. if *allow_rescale=True*), yo
 
   url='https://github.com/jewettaij/superpose3d',
 
-  download_url='https://github.com/jewettaij/superpose3d/archive/v0.2.5.zip',
+  download_url='https://github.com/jewettaij/superpose3d/archive/v0.2.6.zip',
 
-  version='0.2.5',
+  version='0.2.6',
 
-
+  install_requires=[
+      'numpy',
+  ],
+    
   keywords=['registration', '3d', 'structure-comparison', 'molecular-structure',
             'clem'],
 
-  # BSD 3-Clause License:
-  # - http://choosealicense.com/licenses/bsd-3-clause
-  # - http://opensource.org/licenses/BSD-3-Clause
-
-  license='BSD',
+  license='MIT',
 
   classifiers=['Development Status :: 4 - Beta',
-               'License :: OSI Approved :: BSD License',
+               'License :: OSI Approved :: MIT License',
                'Environment :: Console',
                'Operating System :: MacOS :: MacOS X',
                'Operating System :: POSIX :: Linux',
