@@ -1,5 +1,9 @@
-[![Build Status](https://travis-ci.org/jewettaij/superpose3d.svg?branch=master)](https://travis-ci.org/jewettaij/superpose3d.svg?branch=master)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)]
+[![Build Status](https://travis-ci.org/jewettaij/superpose3d.svg?branch=master)](./.travis.yml)
+[![GitHub](https://img.shields.io/github/license/jewettaij/superpose3d)](./LICENSE.md)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/superpose3d)](https://pypistats.org/packages/moltemplate)
+[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/jewettaij/superpose3d)]()
+
+
 
 superpose3d
 ===========
@@ -10,7 +14,7 @@ superpose3d
 def Superpose3D(X_i,    # <-- Nx3 array of coords for the "frozen" point cloud
                 x_i,    # <-- Nx3 array of coords for the "mobile" point cloud
                 w_i=None, #<- optional weights for the calculation of RMSD
-                        #     (default w_i = 1 for all i)
+                          #   (default w_i = 1 for all i)
                 allow_rescale=False)  #<--attempt to rescale mobile point cloud?
 ```
 
