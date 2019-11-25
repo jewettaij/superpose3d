@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import numpy as np
+from math import *
 from superpose3d import Superpose3D
 
 def test_superpose3d():
@@ -35,4 +36,13 @@ def test_superpose3d():
                  (X[i][1] - xprime[i][1])**2 +
                  (X[i][2] - xprime[i][2])**2)
 
+    RMSD = sqrt(RMSD)
     assert(abs(RMSD - result[0]) < 1.0e-6)
+
+
+def main():
+    test_superpose3d()
+
+
+if __name__ == '__main__':
+    main()

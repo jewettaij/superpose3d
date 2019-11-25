@@ -25,11 +25,11 @@ them using **rotations**, **translations**, and (optionally) **scale**
 transformations in order to minimize the root-mean-squared-distance (RMSD)
 between corresponding points from either point cloud, where RMSD is defined as:
 ```
-   RMSD = sqrt((Sum_i  w_i * |X_i - Sum_j(c*R_ij*x_j + T_i))|^2) / (Sum_j w_j))
+   RMSD = sqrt((Σ_i  w_i * |X_i - Σ_j(c*R_ij*x_j + T_i))|^2) / (Σ_j w_j))
 ```
 If *w_i=None*, equal weights are used.  In that case:
 ```
-   RMSD = sqrt(( Sum_i |X_i - Sum_j(c*R_ij*x_j + T_i) )|^2 ) / N)
+   RMSD = sqrt(( Σ_i |X_i - Σ_j(c*R_ij*x_j + T_i) )|^2 ) / N)
 ```
 ...where:
 ```
