@@ -36,7 +36,7 @@ def test_superpose3d():
                  (X[i][1] - xprime[i][1])**2 +
                  (X[i][2] - xprime[i][2])**2)
 
-    RMSD = sqrt(RMSD)
+    RMSD = sqrt(RMSD / len(X))
     assert(abs(RMSD - result[0]) < 1.0e-6)
 
 
