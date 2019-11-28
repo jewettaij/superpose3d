@@ -31,7 +31,9 @@ If *w<sub>i</sub>* are omitted (ie. if *w<sub>i</sub> = nullptr*),
 then equal weights are used.  In that case:
 
 <img src="http://latex.codecogs.com/gif.latex?\large&space;RMSD=\left(\frac{1}{n}\,\sum_{i=1}^n\,|X_i-\sum_{j=1}^n (cR_{ij}x_j+T_i)|^2\right)^{\frac{1}{2}}"/>
+
 ...where:
+
 ```
    T_j  = a translation vector (a 1-D numpy array containing x,y,z displacements),
    R_ij = a rotation matrix    (a 3x3 numpy array whose determinant = 1),
