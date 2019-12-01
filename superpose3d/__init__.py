@@ -54,6 +54,9 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
             aaXf[n][d] = aaXf_orig[n][d] - aCenter_f[d]
             aaXm[n][d] = aaXm_orig[n][d] - aCenter_m[d]
 
+    Rgf = 0.0  # <-- the RMS size of the particles in the frozen object aaXf
+    Rgm = 0.0  # <-- the RMS size of the particles in the mobile object aaXm
+
     if allow_rescale:
         # Optional: For numerical stability, we might as well rescale the
         # coordinates initially to make sure they have the same approximate
@@ -62,8 +65,6 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
         # (ie. by several orders of magnitude).
         # Note: This is NOT the optimal scale factor.
         #       (That must be determined later.)
-        Rgf = 0.0  # <-- the RMS size of the particles in the frozen object aaXf
-        Rgm = 0.0  # <-- the RMS size of the particles in the mobile object aaXm
         for n in range(0, N):
             for d in range(0, 3):
                 Rgf += aWeights[n]*((aaXf[n][d])**2)
