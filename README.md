@@ -8,6 +8,8 @@
 superpose3d
 ===========
 
+*Note: C++ version [here](https://github.com/jewettaij/superpose3d_cpp)*
+
 ##  Usage
 
 ```python
