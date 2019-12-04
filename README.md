@@ -8,7 +8,8 @@
 superpose3d
 ===========
 
-*Note: C++ version [here](https://github.com/jewettaij/superpose3d_cpp)*
+Note: There is a C++ version of this repository
+[here](https://github.com/jewettaij/superpose3d_cpp).
 
 ##  Usage
 
@@ -27,12 +28,12 @@ them using **rotations**, **translations**, and (optionally) **scale**
 transformations in order to minimize the root-mean-squared-distance (RMSD)
 between corresponding points from either point cloud, where RMSD is defined as:
 
-<img src="http://latex.codecogs.com/gif.latex?\large&space;RMSD=\left(\frac{\sum_{i=1}^n\,w_i\,|X_i-\sum_{j=1}^n(cR_{ij}x_j+T_i)|^2}{\sum_{i=1}^nw_i}\right)^{\frac{1}{2}}"/>
+<img src="http://latex.codecogs.com/gif.latex?\large&space;RMSD=\sqrt\left\sum_{i=1}^n\,w_i\,\left|X_i-\left(\sum_{j=1}^ncR_{ij}x_j+T_i\right)\right|^2\quad\middle/\quad\sum_{i=1}^nw_i}\right}"/>
 
-If *w<sub>i</sub>* are omitted (ie. if *w<sub>i</sub> = nullptr*),
+If *w<sub>i</sub>* are omitted (ie. if *w<sub>i</sub> = None*),
 then equal weights are used.  In that case:
 
-<img src="http://latex.codecogs.com/gif.latex?\large&space;RMSD=\left(\frac{1}{n}\,\sum_{i=1}^n\,|X_i-\sum_{j=1}^n (cR_{ij}x_j+T_i)|^2\right)^{\frac{1}{2}}"/>
+<img src="http://latex.codecogs.com/gif.latex?\large&space;RMSD=\sqrt{\,\frac{1}{n}\,\sum_{i=1}^n\,\,\left|X_i-\left(\sum_{j=1}^n cR_{ij}x_j+T_i\right)\right|^2}"/>
 
 ...where:
 
