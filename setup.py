@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from setuptools import setup
 
 setup(
@@ -63,9 +65,9 @@ https://github.com/jewettaij/superpose3d_cpp
 
   url='https://github.com/jewettaij/superpose3d',
 
-  download_url='https://github.com/jewettaij/superpose3d/archive/v0.2.7.zip',
+  download_url='https://github.com/jewettaij/superpose3d/archive/v0.2.8.zip',
 
-  version='0.2.7',
+  version='0.2.8',
 
   install_requires=[
       'numpy',
