@@ -190,15 +190,15 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
 
     # Lastly, calculate the translational offset:
     # Recall that:
-    #RMSD=sqrt((Sum_i  w_i * |X_i - Sum_j(c*R_ij*x_j + T_i))|^2) / (Sum_j w_j))
-    #    =sqrt((Sum_i  w_i * |X_i - x_i')|^2) / (Sum_j w_j))
+    #RMSD=sqrt((Σ_i  w_i * |X_i - (Σ_j c*R_ij*x_j + T_i))|^2) / (Σ_j w_j))
+    #    =sqrt((Σ_i  w_i * |X_i - x_i'|^2) / (Σ_j w_j))
     #  where
-    # x_i' = Sum_j(c*R_ij*x_j) + T_i
+    # x_i' = Σ_j c*R_ij*x_j + T_i
     #      = Xcm_i + c*R_ij*(x_j - xcm_j)
     #  and Xcm and xcm = center_of_mass for the frozen and mobile point clouds
     #                  = aCenter_f[]       and       aCenter_m[],  respectively
     # Hence:
-    #  T_i = Xcm_i - Sum_j c*R_ij*xcm_j  =  aTranslate[i]
+    #  T_i = Xcm_i - Σ_j c*R_ij*xcm_j  =  aTranslate[i]
 
     aTranslate = np.empty(3)
     for i in range(0,3):
