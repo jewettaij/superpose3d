@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from math import *
 import numpy as np
 from numpy import linalg as LA
