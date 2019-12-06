@@ -17,7 +17,7 @@ setup(
 def Superpose3D(X,    # <-- Nx3 array of coords for the "frozen" point cloud
                 x,    # <-- Nx3 array of coords for the "mobile" point cloud
                 w=None, #<- optional weights for the calculation of RMSD
-                        #   (default w_n = 1 for all n)
+                        #   (default w[n] = 1 for all n)
                 allow_rescale=False)  #<--attempt to rescale mobile point cloud?
 ```
 
@@ -29,17 +29,17 @@ Superpose3D() takes two ordered lists (or numpy arrays) of xyz coordinates
 to minimize the root-mean-squared-distance (RMSD) between corresponding
 points from either point cloud, where RMSD is defined as:
 ```
-   RMSD = sqrt( (Σ_n  w_n * Σ_i |X_ni - (Σ_j c*R_ij*x_nj + T_i)|^2) / (Σ_n w_n) )
+   RMSD = sqrt( (Σ_n w[n] * Σ_i |X[n][i] - (Σ_j c*R[i][j]*x[n][j] + T[i])|^2) / (Σ_n w[n]) )
 ```
-If *w_n=None*, equal weights are used.  In that case:
+If *w=None*, equal weights are used.  In that case:
 ```
-   RMSD = sqrt( (Σ_n Σ_i |X_ni - (Σ_j c*R_ij*x_nj + T_i)|^2) / N )
+   RMSD = sqrt( (Σ_n Σ_i |X[n][i] - (Σ_j c*R[i][j]*x[n][j] + T[i])|^2) / N )
 ```
 ...where:
 ```
-   T_j  = a translation vector (a 1-D numpy array containing x,y,z displacements),
-   R_ij = a rotation matrix    (a 3x3 numpy array whose determinant = 1),
-    c   = a scalar             (a number)
+    T  = a translation vector (a 1-D numpy array containing x,y,z displacements),
+    R  = a rotation matrix    (a 3x3 numpy array whose determinant = 1),
+    c  = a scalar             (a number)
 ```
 This function returns a 4-tuple containing the optimal values of:
 ```
@@ -66,9 +66,9 @@ https://github.com/jewettaij/superpose3d_cpp
 
   url='https://github.com/jewettaij/superpose3d',
 
-  download_url='https://github.com/jewettaij/superpose3d/archive/v0.2.10.zip',
+  download_url='https://github.com/jewettaij/superpose3d/archive/v0.2.11.zip',
 
-  version='0.2.10',
+  version='0.2.11',
 
   install_requires=[
       'numpy',
