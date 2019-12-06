@@ -14,25 +14,26 @@ setup(
 ##  Usage
 
 ```
-def Superpose3D(X_n,    # <-- Nx3 array of coords for the "frozen" point cloud
-                x_n,    # <-- Nx3 array of coords for the "mobile" point cloud
-                w_n=None, #<- optional weights for the calculation of RMSD
+def Superpose3D(X,    # <-- Nx3 array of coords for the "frozen" point cloud
+                x,    # <-- Nx3 array of coords for the "mobile" point cloud
+                w=None, #<- optional weights for the calculation of RMSD
                         #     (default w_n = 1 for all n)
                 allow_rescale=False)  #<--attempt to rescale mobile point cloud?
 ```
 
 Superpose3D() takes two ordered lists (or numpy arrays) of xyz coordinates
-(*of the same length*, **N**) representing points in a point cloud (**X_n** and
-**x_n**). Treating them as rigid objects, "Superpose3D()" attempts to superimpose
-them using **rotations**, **translations**, and (optionally) **scale**
-transformations in order to minimize the root-mean-squared-distance (RMSD)
-between corresponding points from either point cloud, where RMSD is defined as:
+(*of the same length*, **N**) representing points in a point cloud
+(**X[n][i]** and **x[n][i]**). Treating them as rigid objects,
+"Superpose3D()" attempts to superimpose them using **rotations**,
+**translations**, and (optionally) **scale** transformations in order
+to minimize the root-mean-squared-distance (RMSD) between corresponding
+points from either point cloud, where RMSD is defined as:
 ```
-   RMSD = sqrt( (Σ_n  w_n * Σ_i |X_n - (Σ_j c*R_ij*x_j + T_i)|^2) / (Σ_j w_j) )
+   RMSD = sqrt( (Σ_n  w_n * Σ_i |X_ni - (Σ_j c*R_ij*x_nj + T_i)|^2) / (Σ_n w_n) )
 ```
 If *w_n=None*, equal weights are used.  In that case:
 ```
-   RMSD = sqrt( (Σ_n * Σ_i |X_n - (Σ_j c*R_ij*x_j + T_i)|^2) / N )
+   RMSD = sqrt( (Σ_n Σ_i |X_n - (Σ_j c*R_ij*x_j + T_i)|^2) / N )
 ```
 ...where:
 ```
