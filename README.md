@@ -14,26 +14,26 @@ Note: There is a C++ version of this repository
 ##  Usage
 
 ```python
-def Superpose3D(X_i,    # <-- Nx3 array of coords for the "frozen" point cloud
-                x_i,    # <-- Nx3 array of coords for the "mobile" point cloud
-                w_i=None, #<- optional weights for the calculation of RMSD
-                          #   (default w_i = 1 for all i)
+def Superpose3D(X,    # <-- Nx3 array of coords for the "frozen" point cloud
+                x,    # <-- Nx3 array of coords for the "mobile" point cloud
+                w = None, #<- optional weights for the calculation of RMSD
+                          #   (default w[n] = 1 for all n)
                 allow_rescale=False)  #<--attempt to rescale mobile point cloud?
 ```
 
 Superpose3D() takes two ordered lists (or numpy arrays) of xyz coordinates
-(*of the same length*, **N**) representing points in a point cloud (**X_i** and
-**x_i**). Treating them as rigid objects, "Superpose3D()" attempts to superimpose
+(*of the same length*, **N**) representing points in a point cloud (**X** and
+**x**). Treating them as rigid objects, "Superpose3D()" attempts to superimpose
 them using **rotations**, **translations**, and (optionally) **scale**
 transformations in order to minimize the root-mean-squared-distance (RMSD)
 between corresponding points from either point cloud, where RMSD is defined as:
 
-<img src="http://latex.codecogs.com/gif.latex?\large&space;RMSD=\sqrt\left\sum_{i=1}^n\,w_i\,\left|X_i-\left(\sum_{j=1}^ncR_{ij}x_j+T_i\right)\right|^2\quad\middle/\quad\sum_{i=1}^nw_i}\right}"/>
+<img src="http://latex.codecogs.com/gif.latex?\large&space;RMSD=\sqrt\left\sum_{n=1}^N\,w_n\,\sum_{i=1}^3 \left|X_{ni}-\left(\sum_{j=1}^3 c R_{ij}x_{nj}+T_i\right)\right|^2\quad\middle/\quad\sum_{n=1}^N w_n}\right}"/>
 
-If *w<sub>i</sub>* are omitted (ie. if *w<sub>i</sub> = None*),
+If *w<sub>n</sub>* are omitted (ie. if *w<sub>n</sub> = None*),
 then equal weights are used.  In that case:
 
-<img src="http://latex.codecogs.com/gif.latex?\large&space;RMSD=\sqrt{\,\frac{1}{n}\,\sum_{i=1}^n\,\,\left|X_i-\left(\sum_{j=1}^n cR_{ij}x_j+T_i\right)\right|^2}"/>
+<img src="http://latex.codecogs.com/gif.latex?\large&space;RMSD=\sqrt{\,\frac{1}{n}\,\sum_{n=1}^N\,\,\sum_{i=1}^3 \left|X_{ni}-\left(\sum_{j=1}^3 cR_{ij}x_{nj}+T_i\right)\right|^2}"/>
 
 ...where:
 
