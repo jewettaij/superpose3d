@@ -39,7 +39,7 @@ If *w=None*, equal weights are used.  In that case:
 ```
     T  = a translation vector (a 1-D numpy array containing x,y,z displacements),
     R  = a rotation matrix    (a 3x3 numpy array whose determinant = 1),
-    c  = a scalar             (a number)
+    c  = a scalar             (a number, 1 by default)
 ```
 This function returns a 4-tuple containing the optimal values of:
 ```
