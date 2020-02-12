@@ -8,8 +8,8 @@
 superpose3d
 ===========
 
-Note: There is a C++ version of this repository
-[here](https://github.com/jewettaij/superpose3d_cpp).
+Note: There is a ***C++ version*** of this repository
+[**here**](https://github.com/jewettaij/superpose3d_cpp).
 
 ##  Usage
 
