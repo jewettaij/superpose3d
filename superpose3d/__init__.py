@@ -172,12 +172,12 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
         # Before returning "c" to the caller, we need to incorporate those
         # factors into "c" as well.
         c *= Rgf / Rgm
+        pPp *= Rgf * Rgm
         # And, lastly, undo this before calculating E0 below
         for n in range(0, N):
             for d in range(0, 3):
                 aaXf[n][d] *= Rgf
                 aaXm[n][d] *= Rgm
-
     # Finally compute the RMSD between the two coordinate sets:
     # First compute E0 from equation 24 of the paper
     E0 = 0.0
@@ -185,7 +185,7 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
         for d in range(0, 3):
             # (remember to include the scale factor "c" that we inserted)
             E0 += aWeights[n] * ((aaXf[n][d] - c*aaXm[n][d])**2)
-    sum_sqr_dist = E0 - 2.0*pPp
+    sum_sqr_dist = E0 - c*2.0*pPp
     if sum_sqr_dist < 0.0:
         sum_sqr_dist = 0.0
     rmsd = sqrt(sum_sqr_dist/sum_weights)
