@@ -56,29 +56,6 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
             aaXf[n][d] = aaXf_orig[n][d] - aCenter_f[d]
             aaXm[n][d] = aaXm_orig[n][d] - aCenter_m[d]
 
-    Rgf = 0.0  # <-- the RMS size of the particles in the frozen object aaXf
-    Rgm = 0.0  # <-- the RMS size of the particles in the mobile object aaXm
-
-    if allow_rescale:
-        # Optional: For numerical stability, we might as well rescale the
-        # coordinates initially to make sure they have the same approximate
-        # scale before we attempt to superimpose them.
-        # This is only necessary if one object is much bigger than the other
-        # (ie. by several orders of magnitude).
-        # Note: This is NOT the optimal scale factor.
-        #       (That must be determined later.)
-        for n in range(0, N):
-            for d in range(0, 3):
-                Rgf += aWeights[n]*((aaXf[n][d])**2)
-                Rgm += aWeights[n]*((aaXm[n][d])**2)
-        Rgf = sqrt(Rgf / sum_weights)
-        Rgm = sqrt(Rgm / sum_weights)
-
-        for n in range(0, N):
-            for d in range(0, 3):
-                aaXf[n][d] /= Rgf
-                aaXm[n][d] /= Rgm
-
     # Calculate the "M" array from the Diamond paper (equation 16)
     M = np.zeros((3,3))
     for n in range(0, N):
@@ -167,17 +144,7 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
                 Waxaixai += aWeights[a] * aaXm[a][i] * aaXm[a][i]
                 WaxaiXai += aWeights[a] * aaXm[a][i] * aaXf[a][i]
         c = (WaxaiXai + pPp) / Waxaixai
-        # Recall that we previously divided the two sets of coordinates by Rgm
-        # and Rgf respectively. (I thought it might improve numerical stability)
-        # Before returning "c" to the caller, we need to incorporate those
-        # factors into "c" as well.
-        c *= Rgf / Rgm
-        pPp *= Rgf * Rgm
-        # And, lastly, undo this before calculating E0 below
-        for n in range(0, N):
-            for d in range(0, 3):
-                aaXf[n][d] *= Rgf
-                aaXm[n][d] *= Rgm
+
     # Finally compute the RMSD between the two coordinate sets:
     # First compute E0 from equation 24 of the paper
     E0 = 0.0
