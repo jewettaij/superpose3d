@@ -153,7 +153,7 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
             # (remember to include the scale factor "c" that we inserted)
             E0 += aWeights[n] * ((aaXf[n][d] - c*aaXm[n][d])**2)
     sum_sqr_dist = E0 - c*2.0*pPp
-    if sum_sqr_dist < 0.0:
+    if sum_sqr_dist < 0.0: #(edge case due to rounding error)
         sum_sqr_dist = 0.0
     rmsd = sqrt(sum_sqr_dist/sum_weights)
 
