@@ -16,8 +16,8 @@ Note: There is a ***C++ version*** of this repository
 ```python
 def Superpose3D(X,    # <-- Nx3 array of coords for the "frozen" point cloud
                 x,    # <-- Nx3 array of coords for the "mobile" point cloud
-                w = None, #<- optional weights for the calculation of RMSD
-                          #   (default w[n] = 1 for all n)
+                w = None, # <-- an optional array of N weights
+                          #     (If w=None, equal weights will be used)
                 allow_rescale=False)  #<--attempt to rescale mobile point cloud?
 ```
 
