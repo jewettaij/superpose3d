@@ -20,7 +20,7 @@ def Superpose3D(X,    # <-- Nx3 array of coords for the "frozen" point cloud
                           #     (If w=None, equal weights will be used)
                 allow_rescale=False,  #<--attempt to rescale mobile point cloud?
                 q = None) # <-- optional: a quaternion from which the axis
-                          #             of rotation and angle can be determined.
+                          #             of rotation and angle can be determined
 ```
 
 Superpose3D() takes two ordered lists (or numpy arrays) of xyz coordinates
@@ -57,6 +57,7 @@ if the caller supplies an extra argument specifying the weight of every
 point in the cloud (*w<sub>n</sub>*).  In that case, RMSD is defined as:
 <img src="http://latex.codecogs.com/gif.latex?\large&space;RMSD=\sqrt\left\sum_{n=1}^N\,w_n\,\sum_{i=1}^3 \left|X_{ni}-\left(\sum_{j=1}^3 c R_{ij}x_{nj}+T_i\right)\right|^2\quad\middle/\quad\sum_{n=1}^N w_n}\right}"/>
 
+#### Scale transformations
 This function implements a more general variant of the method from this paper:
 R. Diamond, (1988)
 "A Note on the Rotational Superposition Problem",
