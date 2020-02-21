@@ -18,7 +18,9 @@ def Superpose3D(X,    # <-- Nx3 array of coords for the "frozen" point cloud
                 x,    # <-- Nx3 array of coords for the "mobile" point cloud
                 w = None, # <-- an optional array of N weights
                           #     (If w=None, equal weights will be used)
-                allow_rescale=False)  #<--attempt to rescale mobile point cloud?
+                allow_rescale=False,  #<--attempt to rescale mobile point cloud?
+                q = None) #<-- optional: a quaternion from which the axis
+                          #             of rotation and angle can be determined.
 ```
 
 Superpose3D() takes two ordered lists (or numpy arrays) of xyz coordinates
@@ -29,7 +31,6 @@ transformations in order to minimize the root-mean-squared-distance (RMSD)
 between corresponding points from either point cloud, where RMSD is defined as:
 
 <img src="http://latex.codecogs.com/gif.latex?\large&space;RMSD=\sqrt{\,\frac{1}{N}\,\sum_{n=1}^N\,\,\sum_{i=1}^3 \left|X_{ni}-\left(\sum_{j=1}^3 cR_{ij}x_{nj}+T_i\right)\right|^2}"/>
-
 ...where:
 ```
    T_j  = a translation vector (a 1-D numpy array containing x,y,z displacements),
@@ -40,7 +41,17 @@ This function returns a 4-tuple containing the optimal values of:
 ```
    (RMSD, T, R, c)
 ```
-A *weighted* version of the RMSD minimization algorithm is also available
+
+#### Rotation angles, axes, and quaternions
+If the rotation angle and axis are also needed, then you must specify the
+optional *q* argument.  You should supply q with an array of size 4.
+After invoking Superpose(), *q* will store the
+[quaternion corresponding to rotation *R*](https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation).  The first element of *q* will store *cos(θ/2)*
+(where *θ* is the rotation angle).  The remaining 3 elements of *q* will store
+the axis of rotation (with length *sin(θ/2)*).
+
+#### Weighted RMSD
+A weighted version of the RMSD minimization algorithm is also available
 if the caller supplies an extra argument specifying the weight of every
 point in the cloud (*w<sub>n</sub>*).  In that case, RMSD is defined as:
 <img src="http://latex.codecogs.com/gif.latex?\large&space;RMSD=\sqrt\left\sum_{n=1}^N\,w_n\,\sum_{i=1}^3 \left|X_{ni}-\left(\sum_{j=1}^3 c R_{ij}x_{nj}+T_i\right)\right|^2\quad\middle/\quad\sum_{n=1}^N w_n}\right}"/>
