@@ -19,7 +19,7 @@ def Superpose3D(X,    # <-- Nx3 array of coords for the "frozen" point cloud
                 w = None, # <-- an optional array of N weights
                           #     (If w=None, equal weights will be used)
                 allow_rescale=False,  #<--attempt to rescale mobile point cloud?
-                q = None) #<-- optional: a quaternion from which the axis
+                q = None) # <-- optional: a quaternion from which the axis
                           #             of rotation and angle can be determined.
 ```
 
@@ -31,6 +31,7 @@ transformations in order to minimize the root-mean-squared-distance (RMSD)
 between corresponding points from either point cloud, where RMSD is defined as:
 
 <img src="http://latex.codecogs.com/gif.latex?\large&space;RMSD=\sqrt{\,\frac{1}{N}\,\sum_{n=1}^N\,\,\sum_{i=1}^3 \left|X_{ni}-\left(\sum_{j=1}^3 cR_{ij}x_{nj}+T_i\right)\right|^2}"/>
+
 ...where:
 ```
    T_j  = a translation vector (a 1-D numpy array containing x,y,z displacements),
