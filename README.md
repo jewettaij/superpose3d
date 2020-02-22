@@ -19,7 +19,7 @@ def Superpose3D(X,    # <-- Nx3 array of coords for the "frozen" point cloud
                 w = None, # <-- an optional array of N weights
                           #     (If w=None, equal weights will be used)
                 allow_rescale=False,  #<--attempt to rescale mobile point cloud?
-                q = None) # <-- optional: store quaternion for rotation here
+                q = None) # <-- optional: store the quaternion for rotation here
 ```
 
 Superpose3D() takes two ordered lists (or numpy arrays) of xyz coordinates
@@ -43,10 +43,11 @@ This function returns a 4-tuple containing the optimal values of:
 ```
 
 ### Rotation angles, axes, and quaternions
-If the rotation angle and axis are also needed, then you must specify the
-optional *q* argument.  You should supply q with an array of size 4.
-After invoking Superpose(), *q* will store the
-[quaternion corresponding to rotation *R*](https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation).  The first element of *q* will store *cos(θ/2)*
+If the rotation angle and axis are also needed, you can specify an
+optional *q* argument (an array of size 4).  After invoking Superpose(),
+*q* will store the
+[quaternion corresponding to rotation *R*](https://en.wikipedia.org/wiki/Quatern
+ions_and_spatial_rotation).  The first element of *q* will store *cos(θ/2)*
 (where *θ* is the rotation angle).  The remaining 3 elements of *q* will store
 the axis of rotation (with length *sin(θ/2)*).
 

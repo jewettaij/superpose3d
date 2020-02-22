@@ -16,9 +16,10 @@ setup(
 ```
 def Superpose3D(X,    # <-- Nx3 array of coords for the "frozen" point cloud
                 x,    # <-- Nx3 array of coords for the "mobile" point cloud
-                w=None, #<- optional weights for the calculation of RMSD
-                        #   (default w[n] = 1 for all n)
-                allow_rescale=False)  #<--attempt to rescale mobile point cloud?
+                w = None, # <-- an optional array of N weights
+                          #     (If w=None, equal weights will be used)
+                allow_rescale=False,  #<--attempt to rescale mobile point cloud?
+                q = None) # <-- optional: store the quaternion for rotation here
 ```
 
 Superpose3D() takes two ordered lists (or numpy arrays) of xyz coordinates
@@ -45,6 +46,11 @@ This function returns a 4-tuple containing the optimal values of:
 ```
    (RMSD, T, R, c)
 ```
+If the rotation angle and axis are also needed, the caller can specify an
+optional *q* argument (an array of size 4).  After invoking Superpose(),
+*q* will store the quaternion corresponding to rotation *R*,
+from which the rotation angle and axis can be determined.
+
 This function implements a more general variant of the method from this paper:
 R. Diamond, (1988)
 "A Note on the Rotational Superposition Problem",
