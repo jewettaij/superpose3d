@@ -72,9 +72,9 @@ https://github.com/jewettaij/superpose3d_cpp
 
   url='https://github.com/jewettaij/superpose3d',
 
-  download_url='https://github.com/jewettaij/superpose3d/archive/v0.4.0.zip',
+  download_url='https://github.com/jewettaij/superpose3d/archive/v0.4.1.zip',
 
-  version='0.4.0',
+  version='0.4.1',
 
   install_requires=[
       'numpy',
@@ -92,6 +92,8 @@ https://github.com/jewettaij/superpose3d_cpp
                'Operating System :: POSIX :: Linux',
                'Operating System :: Microsoft :: Windows',
                'Programming Language :: Python',
+               'Programming Language :: Python :: 2.7',
+               'Programming Language :: Python :: 3.7',
                'Topic :: Scientific/Engineering'],
 
   zip_safe=True,

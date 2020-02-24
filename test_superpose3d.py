@@ -6,10 +6,10 @@ from math import *
 from superpose3d import Superpose3D
 
 def test_superpose3d():
-    X=[[0,0,0],[0,0,1],[0,1,1],[1,1,1]]
-    x=[[0,0,0],[0,1,0],[0,1,-1],[1,1,-1]]  # (=X after rotation around the Z axis)
+    X=[[0,0,0],[0,0,1.05],[0,1,1],[1,1,1]]
+    x=[[0,0,0],[0,1,0],[0,1,-1],[1,1,-1]]  # (~=X after 90 degree rotation)
+
     result = Superpose3D(X,x)
-    assert(abs(result[0]) < 1.0e-6)
 
     Xshifted = [ [X[i][0],X[i][1]+100, X[i][2]] for i in range(0,len(X))]
     xscaled  = [ [2*x[i][0],2*x[i][1],    2*x[i][2]] for i in range(0,len(x))]
@@ -17,7 +17,10 @@ def test_superpose3d():
 
     # Now try again using the translated, rescaled coordinates:
 
-    result = Superpose3D(X, xscshift, None, True)
+    # now test weights, rescale, and quaternions
+    w = [1.0, 1.0, 1.0, 1.0]
+    q = [0.0, 0.0, 0.0, 0.0]
+    result = Superpose3D(X, xscshift, w, True, q)
 
     # Does the RMSD returned in result[0] match the RMSD calculated manually?
     R = np.matrix(result[1])              # rotation matrix
@@ -36,6 +39,7 @@ def test_superpose3d():
     print('rotation (R) = \n'+str(result[1]))
     print('translation (T) = '+str(result[2]))
     print('transformation used: x_i\' = Sum_over_j c*R_ij*x_j + T_i')
+    print(' q = '+str(q)+'\n')
 
     RMSD = 0.0
     for i in range(0, len(X)):

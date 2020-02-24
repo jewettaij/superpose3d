@@ -95,23 +95,32 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     P[3][2] = V[2]
     P[3][3] = 0.0
 
-    aEigenvals, aaEigenvects = LA.eigh(P)
+    p = np.zeros(4)
+    # default values (in case the caller supplies nonsensical because N<2)
+    p[3] = 1.0
+    pPp = 0.0
+    singular = (N < 2)
+    try:
+        aEigenvals, aaEigenvects = LA.eigh(P)
+    except LinAlgError:
+        singular = True
 
-    #http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.eigh.html
+    if (not singular):
+        #http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.eigh.html
 
-    eval_max = aEigenvals[0]
-    i_eval_max = 0
-    for i in range(1,4):
-        if aEigenvals[i] > eval_max:
-            eval_max = aEigenvals[i]
-            i_eval_max = i
+        eval_max = aEigenvals[0]
+        i_eval_max = 0
+        for i in range(1,4):
+            if aEigenvals[i] > eval_max:
+                eval_max = aEigenvals[i]
+                i_eval_max = i
 
-    # The vector "p" contains the optimal rotation (in quaternion format)
-    p = np.empty(4)
-    p[0] = aaEigenvects[0][ i_eval_max ]
-    p[1] = aaEigenvects[1][ i_eval_max ]
-    p[2] = aaEigenvects[2][ i_eval_max ]
-    p[3] = aaEigenvects[3][ i_eval_max ]
+        # The vector "p" contains the optimal rotation (in quaternion format)
+        p[0] = aaEigenvects[0][ i_eval_max ]
+        p[1] = aaEigenvects[1][ i_eval_max ]
+        p[2] = aaEigenvects[2][ i_eval_max ]
+        p[3] = aaEigenvects[3][ i_eval_max ]
+        pPp = eval_max
     
     # normalize the vector
     # (It should be normalized already, but just in case it is not, do it again)
@@ -139,11 +148,9 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
         q[2] = p[1]  #       are in the wrong order.  I correct for that here.
         q[3] = p[2]  #       "q" is the quaternion correspond to rotation R
 
-    pPp = eval_max
-
     # Optional: Decide the scale factor, c
     c = 1.0   # by default, don't rescale the coordinates
-    if allow_rescale:
+    if allow_rescale and (not singular):
         Waxaixai = 0.0
         WaxaiXai = 0.0
         for a in range(0, N):
