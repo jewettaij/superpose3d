@@ -97,10 +97,10 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     P[3][2] = V[2]
     P[3][3] = 0.0
 
+    # The vector "p" contains the optimal rotation (backwards quaternion format)
     p = np.zeros(4)
-    # default values for p and pPp
-    p[3] = 1.0
-    pPp = 0.0
+    p[3] = 1.0           # p = [0,0,0,1]    default value
+    pPp = 0.0            # = p^T * P * p    (zero by default)
     singular = (N < 2);  # (it doesn't make sense to rotate a single point)
 
     try:
