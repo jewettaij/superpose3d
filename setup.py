@@ -89,7 +89,7 @@ https://github.com/jewettaij/superpose3d_cpp
 
   license='MIT',
 
-  classifiers=['Development Status :: 4 - Beta',
+  classifiers=['Development Status :: 5 - Production/Stable',
                'License :: OSI Approved :: MIT License',
                'Environment :: Console',
                'Operating System :: MacOS :: MacOS X',
