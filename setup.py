@@ -16,10 +16,10 @@ setup(
 ```
 def Superpose3D(X,    # <-- Nx3 array of coords for the "frozen" point cloud
                 x,    # <-- Nx3 array of coords for the "mobile" point cloud
-                w = None, # <-- an optional array of N weights
-                          #     (If w=None, equal weights will be used)
-                allow_rescale=False,  #<--attempt to rescale mobile point cloud?
-                q = None) # <-- optional: store the quaternion for rotation here
+                # ---- optional arguments: ----
+                w = None,        # optional weights for the calculation of RMSD
+                allow_rescale=False,   # attempt to rescale mobile point cloud?
+                report_quaternion=False)      # report rotation angle and axis?
 ```
 
 Superpose3D() takes two ordered lists (or numpy arrays) of xyz coordinates
@@ -97,8 +97,8 @@ https://github.com/jewettaij/superpose3d_cpp
                'Operating System :: Microsoft :: Windows',
                'Programming Language :: Python',
                'Programming Language :: Python :: 2.7',
-               'Programming Language :: Python :: 3.5',
-               'Programming Language :: Python :: 3.7',
+               'Programming Language :: Python :: 3.3',
+               'Programming Language :: Python :: 3.8',
                'Topic :: Scientific/Engineering'],
 
   zip_safe=True,

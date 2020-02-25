@@ -6,9 +6,10 @@ from numpy import linalg as LA
 
 def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
                 aaXm_orig,   # <-- coordinates for the "mobile" object
-                aWeights=None, #<- optional weights for the calculation of RMSD
-                allow_rescale=False, # <-- attempt to rescale mobile object?
-                report_quaternion=False):  # <-- report rotation angle and axis?
+                # ---- optional arguments: ----
+                aWeights=None,   # optional weights for the calculation of RMSD
+                allow_rescale=False,   # attempt to rescale mobile point cloud?
+                report_quaternion=False):     # report rotation angle and axis?
     """
     Superpose3D() takes two lists of xyz coordinates, (of the same length)
     and attempts to superimpose them using rotations, translations, and 
