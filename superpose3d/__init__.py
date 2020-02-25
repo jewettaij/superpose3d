@@ -45,14 +45,15 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
             aCenter_f[d] += aaXf_orig[n][d]*aWeights[n]
             aCenter_m[d] += aaXm_orig[n][d]*aWeights[n]
         sum_weights += aWeights[n]
-    for d in range(0, 3):
-        aCenter_f[d] /= sum_weights
-        aCenter_m[d] /= sum_weights
+    if sum_weights != 0:
+        for d in range(0, 3):
+            aCenter_f[d] /= sum_weights
+            aCenter_m[d] /= sum_weights
 
     # Subtract the centers-of-mass from the original coordinates for each object
     aaXf = np.empty((N,3))
     aaXm = np.empty((N,3))
-    aaXf[0][0] = 0.0
+
     for n in range(0, N):
         for d in range(0, 3):
             aaXf[n][d] = aaXf_orig[n][d] - aCenter_f[d]
@@ -97,10 +98,10 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     P[3][3] = 0.0
 
     p = np.zeros(4)
-    # default values (in case the caller supplies nonsensical because N<2)
+    # default values for p and pPp
     p[3] = 1.0
     pPp = 0.0
-    singular = (N < 2)
+    singular = (N < 2);  # (it doesn't make sense to rotate a single point)
 
     try:
         #http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.eigh.html
@@ -109,8 +110,8 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     except LinAlgError:
         singular = True  # (I have never seen this happen.)
 
-    if (not singular):
-
+ 
+    if (not singular):  # (don't crash if the caller supplies nonsensical input)
         eval_max = aEigenvals[0]
         i_eval_max = 0
         for i in range(1,4):
@@ -166,7 +167,10 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     sum_sqr_dist = E0 - c*2.0*pPp
     if sum_sqr_dist < 0.0: #(edge case due to rounding error)
         sum_sqr_dist = 0.0
-    rmsd = sqrt(sum_sqr_dist/sum_weights)
+
+    rmsd = 0.0
+    if sum_weights != 0.0:
+        rmsd = sqrt(sum_sqr_dist/sum_weights)
 
     # Lastly, calculate the translational offset:
     # Recall that:

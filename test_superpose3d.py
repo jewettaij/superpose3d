@@ -21,14 +21,16 @@ def test_superpose3d():
     # now test weights, rescale, and quaternions
     w = [1.0, 1.0, 1.0, 1.0]
     result = Superpose3D(X, xscshift, w, True)
-
     # Does the RMSD returned in result[0] match the RMSD calculated manually?
     R = np.matrix(result[1])              # rotation matrix
     T = np.matrix(result[2]).transpose()  # translation vector (3x1 matrix)
     c = result[3]                         # scalar
-    _x = np.matrix(xscshift).transpose()
-    _xprime = c*R*_x + T
-    xprime = np.array(_xprime.transpose()) # convert to length 3 numpy array
+    if len(X) > 0:
+        _x = np.matrix(xscshift).transpose()
+        _xprime = c*R*_x + T
+        xprime = np.array(_xprime.transpose()) # convert to length 3 numpy array
+    else:
+        xprime = np.array([])
 
     print('1st (frozen) point cloud:\n'+str(X))
     print('2nd (mobile) point cloud:\n'+str(xscshift))
@@ -46,7 +48,9 @@ def test_superpose3d():
                  (X[i][1] - xprime[i][1])**2 +
                  (X[i][2] - xprime[i][2])**2)
 
-    RMSD = sqrt(RMSD / len(X))
+    if len(X) > 0:
+        RMSD = sqrt(RMSD / len(X))
+
     assert(abs(RMSD - result[0]) < 1.0e-6)
 
 

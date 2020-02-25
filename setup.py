@@ -38,9 +38,9 @@ If *w=None*, equal weights are used.  In that case:
 ```
 ...where:
 ```
-    R  = a rotation matrix    (a 3x3 numpy array whose determinant = 1),
-    T  = a translation vector (a 1-D numpy array containing x,y,z displacements),
-    c  = a scalar             (a number, 1 by default)
+    R = a rotation matrix    (a 3x3 numpy array representing the rotation. |R|=1)
+    T = a translation vector (a 1-D numpy array containing x,y,z displacements)
+    c = a scalar             (a number, 1 by default)
 ```
 This function returns a 4-tuple containing the optimal values of:
 ```
@@ -76,9 +76,9 @@ https://github.com/jewettaij/superpose3d_cpp
 
   url='https://github.com/jewettaij/superpose3d',
 
-  download_url='https://github.com/jewettaij/superpose3d/archive/v1.0.0.zip',
+  download_url='https://github.com/jewettaij/superpose3d/archive/v1.0.1.zip',
 
-  version='1.0.0',
+  version='1.0.1',
 
   install_requires=[
       'numpy',
