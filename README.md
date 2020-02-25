@@ -1,9 +1,9 @@
 [![Build Status](https://travis-ci.org/jewettaij/superpose3d.svg?branch=master)](./.travis.yml)
-[![GitHub](https://img.shields.io/github/license/jewettaij/superpose3d)](./LICENSE.md)
-[![python-versions](https://img.shields.io/pypi/pyversions/superpose3d.svg)]
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/superpose3d)](https://pypistats.org/packages/superpose3d)
+[![python-versions](https://img.shields.io/pypi/pyversions/superpose3d.svg)](https://pypi.org/project/superpose3d/)
 [![PyPI - Version](https://img.shields.io/pypi/v/superpose3d)](https://pypi.org/project/superpose3d/)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/jewettaij/superpose3d)]()
+[![GitHub](https://img.shields.io/github/license/jewettaij/superpose3d)](./LICENSE.md)
 
 
 
@@ -21,7 +21,7 @@ def Superpose3D(X,    # <-- Nx3 array of coords for the "frozen" point cloud
                 w = None, # <-- an optional array of N weights
                           #     (If w=None, equal weights will be used)
                 allow_rescale=False,  #<--attempt to rescale mobile point cloud?
-                q = None) # <-- optional: store the quaternion for rotation here
+                report_quaternion=False)  # <-- report rotation angle and axis?
 ```
 
 Superpose3D() takes two ordered lists (or numpy arrays) of xyz coordinates
@@ -35,23 +35,26 @@ between corresponding points from either point cloud, where RMSD is defined as:
 
 ...where:
 ```
-   T_j  = a translation vector (a 1-D numpy array containing x,y,z displacements),
-   R_ij = a rotation matrix    (a 3x3 numpy array whose determinant = 1),
+   R_ij = a rotation matrix    (a 3x3 numpy array representing the rotation. |R|=1)
+   T_j  = a translation vector (a 1-D numpy array containing x,y,z displacements)
     c   = a scalar             (a number, 1 by default)
 ```
 This function returns a 4-tuple containing the optimal values of:
 ```
-   (RMSD, T, R, c)
+   (RMSD, R, T, c)
 ```
 
 ### Rotation angles, axes, and quaternions
-If the rotation angle and axis are also needed, you can specify an
-optional *q* argument (an array of size 4).  After invoking Superpose(),
-*q* will store the
+If the rotation angle and axis are needed, then set the *report_quaternion*
+argument to *True*. In that case, the function will return this 4-tuple instead:
+```
+   (RMSD, q, T, c)
+```
+...where *q* is a numpy array of size 4.  The first element of *q* will store
+*cos(θ/2)* (where *θ* is the rotation angle).  The remaining 3 elements of *q*
+will store the axis of rotation (with length *sin(θ/2)*).
+Equivalently, *q* is the
 [quaternion corresponding to rotation *R*](https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation).
-The first element of *q* will store *cos(θ/2)*
-(where *θ* is the rotation angle).  The remaining 3 elements of *q* will store
-the axis of rotation (with length *sin(θ/2)*).
 
 ### Weighted RMSD
 A weighted version of the RMSD minimization algorithm is also available

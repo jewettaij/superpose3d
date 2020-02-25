@@ -8,7 +8,7 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
                 aaXm_orig,   # <-- coordinates for the "mobile" object
                 aWeights=None, #<- optional weights for the calculation of RMSD
                 allow_rescale=False, # <-- attempt to rescale mobile object?
-                q = None):   # <-- optional quaternion storing the rotation
+                report_quaternion=False):  # <-- report rotation angle and axis?
     """
     Superpose3D() takes two lists of xyz coordinates, (of the same length)
     and attempts to superimpose them using rotations, translations, and 
@@ -100,13 +100,15 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     p[3] = 1.0
     pPp = 0.0
     singular = (N < 2)
+
     try:
+        #http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.eigh.html
         aEigenvals, aaEigenvects = LA.eigh(P)
+
     except LinAlgError:
-        singular = True
+        singular = True  # (I have never seen this happen.)
 
     if (not singular):
-        #http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.eigh.html
 
         eval_max = aEigenvals[0]
         i_eval_max = 0
@@ -141,12 +143,6 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     aaRotate[2][1] = 2*(p[1]*p[2] + p[0]*p[3]);
     aaRotate[0][2] = 2*(p[0]*p[2] + p[1]*p[3]);
     aaRotate[2][0] = 2*(p[0]*p[2] - p[1]*p[3]);
-
-    if q: # does the caller also want the quaternion as well?
-        q[0] = p[3]  # Note: The "p" variable is not a quaternion in the
-        q[1] = p[0]  #       conventional sense because its elements
-        q[2] = p[1]  #       are in the wrong order.  I correct for that here.
-        q[3] = p[2]  #       "q" is the quaternion correspond to rotation R
 
     # Optional: Decide the scale factor, c
     c = 1.0   # by default, don't rescale the coordinates
@@ -200,5 +196,13 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     # #Turn the column vector back into an ordinary numpy array of size 3:
     #aTranslate = np.array(TcolumnVec.transpose())[0]
 
-    return rmsd, aaRotate, aTranslate, c
+    if report_quaternion: # does the caller want the quaternion?
+        q = np.empty(4)
+        q[0] = p[3]  # Note: The "p" variable is not a quaternion in the
+        q[1] = p[0]  #       conventional sense because its elements
+        q[2] = p[1]  #       are in the wrong order.  I correct for that here.
+        q[3] = p[2]  #       "q" is the quaternion correspond to rotation R
+        return rmsd, q, aTranslate, c
+    else:
+        return rmsd, aaRotate, aTranslate, c
 
