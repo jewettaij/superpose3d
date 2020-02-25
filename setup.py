@@ -38,18 +38,22 @@ If *w=None*, equal weights are used.  In that case:
 ```
 ...where:
 ```
-    T  = a translation vector (a 1-D numpy array containing x,y,z displacements),
     R  = a rotation matrix    (a 3x3 numpy array whose determinant = 1),
+    T  = a translation vector (a 1-D numpy array containing x,y,z displacements),
     c  = a scalar             (a number, 1 by default)
 ```
 This function returns a 4-tuple containing the optimal values of:
 ```
-   (RMSD, T, R, c)
+   (RMSD, R, T, c)
 ```
-If the rotation angle and axis are also needed, the caller can specify an
-optional *q* argument (an array of size 4).  After invoking Superpose(),
-*q* will store the quaternion corresponding to rotation *R*,
-from which the rotation angle and axis can be determined.
+If the rotation angle and axis are needed, then set the *report_quaternion*
+argument to *True*. In that case, the function will return this 4-tuple instead:
+```
+   (RMSD, q, T, c)
+```
+  ...where *q* is the
+[quaternion corresponding to rotation *R*](https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation),
+from which the rotation angle and rotation axis can be easily determined.
 
 This function implements a more general variant of the method from this paper:
 R. Diamond, (1988)
@@ -72,9 +76,9 @@ https://github.com/jewettaij/superpose3d_cpp
 
   url='https://github.com/jewettaij/superpose3d',
 
-  download_url='https://github.com/jewettaij/superpose3d/archive/v0.5.0.zip',
+  download_url='https://github.com/jewettaij/superpose3d/archive/v1.0.0.zip',
 
-  version='0.5.0',
+  version='1.0.0',
 
   install_requires=[
       'numpy',

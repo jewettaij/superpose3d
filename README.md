@@ -1,9 +1,9 @@
 [![Build Status](https://travis-ci.org/jewettaij/superpose3d.svg?branch=master)](./.travis.yml)
+[![GitHub](https://img.shields.io/github/license/jewettaij/superpose3d)](./LICENSE.md)
+[![PyPI - Version](https://img.shields.io/pypi/v/superpose3d)](https://pypi.org/project/superpose3d/)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/superpose3d)](https://pypistats.org/packages/superpose3d)
 [![python-versions](https://img.shields.io/pypi/pyversions/superpose3d.svg)](https://pypi.org/project/superpose3d/)
-[![PyPI - Version](https://img.shields.io/pypi/v/superpose3d)](https://pypi.org/project/superpose3d/)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/jewettaij/superpose3d)]()
-[![GitHub](https://img.shields.io/github/license/jewettaij/superpose3d)](./LICENSE.md)
 
 
 
@@ -52,7 +52,7 @@ argument to *True*. In that case, the function will return this 4-tuple instead:
 ```
 ...where *q* is a numpy array of size 4.  The first element of *q* will store
 *cos(θ/2)* (where *θ* is the rotation angle).  The remaining 3 elements of *q*
-will store the axis of rotation (with length *sin(θ/2)*).
+form a vector (of length *sin(θ/2)*), pointing along the axis of rotation.
 Equivalently, *q* is the
 [quaternion corresponding to rotation *R*](https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation).
 
