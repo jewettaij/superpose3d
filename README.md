@@ -37,7 +37,7 @@ between corresponding points from either point cloud, where RMSD is defined as:
 ```
    R_ij = a rotation matrix    (a 3x3 numpy array representing the rotation. |R|=1)
    T_j  = a translation vector (a 1-D numpy array containing x,y,z displacements)
-    c   = a scalar             (a number, 1 by default)
+    c   = a scalar             (a number. optional. 1 by default)
 ```
 This function returns a 4-tuple containing the optimal values of:
 ```
