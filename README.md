@@ -43,6 +43,10 @@ This function returns a 4-tuple containing the optimal values of:
 ```
    (RMSD, R, T, c)
 ```
+*Note:* This function does not attempt to determine *which* pairs of points
+from either cloud correspond.  Instead, it infers them from the order of the
+arrays.  (It assumes that the *i'th* point from *X* corresponds to the *i'th*
+point from *x*.)
 
 ### Rotation angles, axes, and quaternions
 If the rotation angle and axis are needed, then set the *report_quaternion*
