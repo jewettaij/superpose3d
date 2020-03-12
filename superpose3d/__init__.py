@@ -2,7 +2,6 @@
 
 import numpy as np
 from numpy import linalg as LA
-from scipy.spatial.transform import Rotation as R
 
 def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
                 aaXm_orig,   # <-- coordinates for the "mobile" object
