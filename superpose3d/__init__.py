@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from math import *
 import numpy as np
 from numpy import linalg as LA
+from scipy.spatial.transform import Rotation as R
 
 def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
                 aaXm_orig,   # <-- coordinates for the "mobile" object
@@ -31,42 +31,81 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
 
     """
 
-    assert(len(aaXf_orig) == len(aaXm_orig))
-    N = len(aaXf_orig)
+    #convert input lists as to numpy arrays
+
+    aaXf_orig = np.array(aaXf_orig)
+    aaXm_orig = np.array(aaXm_orig)
+
+
+    #Assert should be used only for debugging.
+
+    if aaXf_orig.shape[0] != aaXm_orig.shape[0]:
+        raise ValueError ("Inputs should have the same size.")
+
+    #convert weights into array
+    N = aaXf_orig.shape[0]
     if (aWeights == None) or (len(aWeights) == 0):
-        aWeights = np.full(N,1.0)
+        aWeights = np.full((N,1),1.0)
+    else:
+        #reshape so multiplications are done column-wise
+        aWeights = np.array(aWeights).reshape(N,1)
 
     # Find the center of mass of each object:
+    """
     aCenter_f = np.zeros(3)
     aCenter_m = np.zeros(3)
     sum_weights = 0.0
+    """
+
+    aCenter_f = np.sum(aaXf_orig * aWeights, axis=0)
+    aCenter_m = np.sum(aaXm_orig * aWeights, axis=0)
+    sum_weights = np.sum(aWeights, axis=0)
+
+    """ 
     for n in range(0, N):
         for d in range(0, 3):
             aCenter_f[d] += aaXf_orig[n][d]*aWeights[n]
             aCenter_m[d] += aaXm_orig[n][d]*aWeights[n]
         sum_weights += aWeights[n]
+    """
+
+    if sum_weights != 0:
+        aCenter_f /= sum_weights
+        aCenter_m /= sum_weights
+    """     
     if sum_weights != 0:
         for d in range(0, 3):
             aCenter_f[d] /= sum_weights
             aCenter_m[d] /= sum_weights
-
+    """
     # Subtract the centers-of-mass from the original coordinates for each object
-    aaXf = np.empty((N,3))
-    aaXm = np.empty((N,3))
+    aaXf = aaXf_orig-aCenter_f
+    aaXm = aaXm_orig-aCenter_m
 
+    """
     for n in range(0, N):
         for d in range(0, 3):
             aaXf[n][d] = aaXf_orig[n][d] - aCenter_f[d]
             aaXm[n][d] = aaXm_orig[n][d] - aCenter_m[d]
+    """
 
     # Calculate the "M" array from the Diamond paper (equation 16)
+
+    """
     M = np.zeros((3,3))
     for n in range(0, N):
         for i in range(0, 3):
             for j in range(0, 3):
                 M[i][j] += aWeights[n] * aaXm[n][i] * aaXf[n][j]
+    """
+
+    M = aaXm.T @ (aaXf * aWeights)
+
+    Q = M + M.T - 2*np.eye(3)*np.trace(M)
 
     # Calculate Q (equation 17)
+
+    """
     traceM = 0.0
     for i in range(0, 3):
         traceM += M[i][i]
@@ -77,6 +116,7 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
             Q[i][j] = M[i][j] + M[j][i]
             if i==j:
                 Q[i][j] -= 2.0 * traceM
+    """
 
     # Calculate V (equation 18)
     V = np.empty(3)
@@ -85,6 +125,8 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     V[2] = M[0][1] - M[1][0];
 
     # Calculate "P" (equation 22)
+
+    """
     P = np.empty((4,4))
     for i in range(0,3):
         for j in range(0,3):
@@ -96,12 +138,18 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     P[2][3] = V[2]
     P[3][2] = V[2]
     P[3][3] = 0.0
+    """
+    P = np.zeros((4,4))
+    P[:3, :3] = Q
+    P[3, :3] = V
+    P[:3, 3] = V
+
 
     # The vector "p" contains the optimal rotation (backwards quaternion format)
     p = np.zeros(4)
     p[3] = 1.0           # p = [0,0,0,1]    default value
     pPp = 0.0            # = p^T * P * p    (zero by default)
-    singular = (N < 2);  # (it doesn't make sense to rotate a single point)
+    singular = (N < 2)   # (it doesn't make sense to rotate a single point)
 
     try:
         #http://docs.scipy.org/doc/numpy/reference/generated/numpy.linalg.eigh.html
@@ -110,32 +158,41 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     except LinAlgError:
         singular = True  # (I have never seen this happen.)
 
- 
     if (not singular):  # (don't crash if the caller supplies nonsensical input)
+
+        i_eval_max = np.argmax(aEigenvals)
+        pPp = np.max(aEigenvals)
+        """
         eval_max = aEigenvals[0]
         i_eval_max = 0
-        for i in range(1,4):
+        for i in range(1, 4):
             if aEigenvals[i] > eval_max:
                 eval_max = aEigenvals[i]
                 i_eval_max = i
+        """
 
         # The vector "p" contains the optimal rotation (in quaternion format)
-        p[0] = aaEigenvects[0][ i_eval_max ]
-        p[1] = aaEigenvects[1][ i_eval_max ]
-        p[2] = aaEigenvects[2][ i_eval_max ]
-        p[3] = aaEigenvects[3][ i_eval_max ]
+
+        p[:] = aaEigenvects[:, i_eval_max]
+        """"
+        p[0] = aaEigenvects[0][i_eval_max]
+        p[1] = aaEigenvects[1][i_eval_max]
+        p[2] = aaEigenvects[2][i_eval_max]
+        p[3] = aaEigenvects[3][i_eval_max]
         pPp = eval_max
-    
+        """
+
     # normalize the vector
     # (It should be normalized already, but just in case it is not, do it again)
-    pnorm = np.linalg.norm(p)
-    for i in range(0,4):
-        p[i] /= pnorm
+    p /= np.linalg.norm(p)
 
     # Finally, calculate the rotation matrix corresponding to "p"
     # (convert a quaternion into a 3x3 rotation matrix)
-    aaRotate = np.empty((3,3))
 
+    the_rotation = R.from_quat(p)
+    aaRotate = the_rotation.as_matrix()
+
+    """
     aaRotate[0][0] =  (p[0]*p[0])-(p[1]*p[1])-(p[2]*p[2])+(p[3]*p[3])
     aaRotate[1][1] = -(p[0]*p[0])+(p[1]*p[1])-(p[2]*p[2])+(p[3]*p[3])
     aaRotate[2][2] = -(p[0]*p[0])-(p[1]*p[1])+(p[2]*p[2])+(p[3]*p[3])
@@ -145,20 +202,34 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     aaRotate[2][1] = 2*(p[1]*p[2] + p[0]*p[3]);
     aaRotate[0][2] = 2*(p[0]*p[2] + p[1]*p[3]);
     aaRotate[2][0] = 2*(p[0]*p[2] - p[1]*p[3]);
+    """
 
     # Optional: Decide the scale factor, c
     c = 1.0   # by default, don't rescale the coordinates
     if allow_rescale and (not singular):
+
+        Waxaixai = np.sum(aWeights * aaXm ** 2)
+        WaxaiXai = np.sum(aWeights * aaXf ** 2)
+
+        """
         Waxaixai = 0.0
         WaxaiXai = 0.0
+        
         for a in range(0, N):
             for i in range(0, 3):
+                
                 Waxaixai += aWeights[a] * aaXm[a][i] * aaXm[a][i]
                 WaxaiXai += aWeights[a] * aaXm[a][i] * aaXf[a][i]
+        """
+
         c = (WaxaiXai + pPp) / Waxaixai
 
     # Finally compute the RMSD between the two coordinate sets:
     # First compute E0 from equation 24 of the paper
+
+    E0 = np.sum((aaXf - c*aaXm)**2)
+    sum_sqr_dist = max(0, E0 - c * 2.0 * pPp)
+    """
     E0 = 0.0
     for n in range(0, N):
         for d in range(0, 3):
@@ -167,10 +238,11 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     sum_sqr_dist = E0 - c*2.0*pPp
     if sum_sqr_dist < 0.0: #(edge case due to rounding error)
         sum_sqr_dist = 0.0
+   """
 
     rmsd = 0.0
     if sum_weights != 0.0:
-        rmsd = sqrt(sum_sqr_dist/sum_weights)
+        rmsd = np.sqrt(sum_sqr_dist/sum_weights)
 
     # Lastly, calculate the translational offset:
     # Recall that:
@@ -184,22 +256,16 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     # Hence:
     #  T_i = Xcm_i - Σ_j c*R_ij*xcm_j  =  aTranslate[i]
 
+
+    aTranslate = aCenter_f - (c*aaRotate @ aCenter_m).T.reshape(3,)
+
+    """
     aTranslate = np.empty(3)
     for i in range(0,3):
         aTranslate[i] = aCenter_f[i]
         for j in range(0,3):
             aTranslate[i] -= c*aaRotate[i][j]*aCenter_m[j]
-
-    # An alternate method to compute "aTranslate" using numpy matrices:
-    #Rmatrix = np.matrix(aaRotate)
-    #TcolumnVec = np.matrix(np.empty((3,1))) # 3x1 numpy matrix<->[[0],[0],[0]]
-    #for d in range(0,3):
-    #    TcolumnVec[d][0] = -aCenter_m[d]
-    #TcolumnVec = c * Rmatrix * TcolumnVec
-    #for d in range(0,3):
-    #    TcolumnVec[d][0] += aCenter_f[d]
-    # #Turn the column vector back into an ordinary numpy array of size 3:
-    #aTranslate = np.array(TcolumnVec.transpose())[0]
+    """
 
     if report_quaternion: # does the caller want the quaternion?
         q = np.empty(4)
