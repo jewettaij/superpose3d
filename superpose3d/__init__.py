@@ -189,10 +189,12 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     # Finally, calculate the rotation matrix corresponding to "p"
     # (convert a quaternion into a 3x3 rotation matrix)
 
+    """
     the_rotation = R.from_quat(p)
     aaRotate = the_rotation.as_matrix()
-
     """
+
+    aaRotate = np.empty((3,3))
     aaRotate[0][0] =  (p[0]*p[0])-(p[1]*p[1])-(p[2]*p[2])+(p[3]*p[3])
     aaRotate[1][1] = -(p[0]*p[0])+(p[1]*p[1])-(p[2]*p[2])+(p[3]*p[3])
     aaRotate[2][2] = -(p[0]*p[0])-(p[1]*p[1])+(p[2]*p[2])+(p[3]*p[3])
@@ -202,7 +204,6 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     aaRotate[2][1] = 2*(p[1]*p[2] + p[0]*p[3]);
     aaRotate[0][2] = 2*(p[0]*p[2] + p[1]*p[3]);
     aaRotate[2][0] = 2*(p[0]*p[2] - p[1]*p[3]);
-    """
 
     # Optional: Decide the scale factor, c
     c = 1.0   # by default, don't rescale the coordinates
