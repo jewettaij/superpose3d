@@ -98,7 +98,9 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
                 M[i][j] += aWeights[n] * aaXm[n][i] * aaXf[n][j]
     """
 
-    M = aaXm.T @ (aaXf * aWeights)
+    M = np.matmul(aaXm.T, (aaXf * aWeights))
+
+    # (Note: In modern python, this also works: M = aaXm.T @ (aaXf * aWeights))
 
     Q = M + M.T - 2*np.eye(3)*np.trace(M)
 
