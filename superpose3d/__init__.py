@@ -259,7 +259,8 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     #  T_i = Xcm_i - Σ_j c*R_ij*xcm_j  =  aTranslate[i]
 
 
-    aTranslate = aCenter_f - (c*aaRotate @ aCenter_m).T.reshape(3,)
+    #aTranslate = aCenter_f - (c*aaRotate @ aCenter_m).T.reshape(3,)
+    aTranslate = aCenter_f - np.matmul(c*aaRotate,aCenter_m).T.reshape(3,)
 
     """
     aTranslate = np.empty(3)
