@@ -192,6 +192,13 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     aaRotate[0][2] = 2*(p[0]*p[2] + p[1]*p[3]);
     aaRotate[2][0] = 2*(p[0]*p[2] - p[1]*p[3]);
 
+    # Alternatively, in modern python versions, this code also works:
+    """
+    from scipy.spatial.transform import Rotation as R
+    the_rotation = R.from_quat(p)
+    aaRotate = the_rotation.as_matrix()
+    """
+
     # Optional: Decide the scale factor, c
     c = 1.0   # by default, don't rescale the coordinates
     if allow_rescale and (not singular):
