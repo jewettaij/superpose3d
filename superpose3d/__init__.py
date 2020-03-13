@@ -210,6 +210,7 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
                 Waxaixai += aWeights[a] * aaXm[a][i] * aaXm[a][i]
                 WaxaiXai += aWeights[a] * aaXm[a][i] * aaXf[a][i]
         """
+        # new code (avoiding for-loops)
         Waxaixai = np.sum(aWeights * aaXm ** 2)
         WaxaiXai = np.sum(aWeights * aaXf ** 2)
 
@@ -228,6 +229,7 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     if sum_sqr_dist < 0.0: #(edge case due to rounding error)
         sum_sqr_dist = 0.0
     """
+    # new code (avoiding for-loops)
     E0 = np.sum((aaXf - c*aaXm)**2)
     sum_sqr_dist = max(0, E0 - c * 2.0 * pPp)
 
