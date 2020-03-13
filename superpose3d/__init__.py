@@ -141,7 +141,8 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
 
     # Calculate "p".  
     # "p" contains the optimal rotation (in backwards-quaternion format)
-    # (First specify the default value for p)
+    # (Note: A discussion of various quaternion conventions is included below.)
+    # First, specify the default value for p:
     p = np.zeros(4)
     p[3] = 1.0           # p = [0,0,0,1]    default value
     pPp = 0.0            # = p^T * P * p    (zero by default)
@@ -260,11 +261,17 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     aTranslate = aCenter_f - np.matmul(c*aaRotate,aCenter_m).T.reshape(3,)
 
     if report_quaternion: # does the caller want the quaternion?
+        # The p array is a quaternion that uses this convention:
+        #https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.transform.Rotation.from_quat.html
+        # However it seems that the following convention is much more popular:
+        # https://en.wikipedia.org/wiki/Quaternions_and_spatial_rotation
+        # https://mathworld.wolfram.com/Quaternion.html
+        # So I return "q" (a version of "p" using the more popular convention).
         q = np.empty(4)
-        q[0] = p[3]  # Note: The "p" variable is not a quaternion in the
-        q[1] = p[0]  #       conventional sense because its elements
-        q[2] = p[1]  #       are in the wrong order.  I correct for that here.
-        q[3] = p[2]  #       "q" is the quaternion correspond to rotation R
+        q[0] = p[3]
+        q[1] = p[0]
+        q[2] = p[1]
+        q[3] = p[2]
         return rmsd, q, aTranslate, c
     else:
         return rmsd, aaRotate, aTranslate, c
