@@ -45,16 +45,11 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     if aaXf_orig.shape[0] != aaXm_orig.shape[0]:
         raise ValueError ("Inputs should have the same size.")
 
-    #convert weights into array
     N = aaXf_orig.shape[0]
-    if (aWeights == None) or (len(aWeights) == 0):
-        aWeights = np.full((N,1),1.0)
-    else:
-        #reshape so multiplications are done column-wise
-        aWeights = np.array(aWeights).reshape(N,1)
-
     # Find the center of mass of each object:
     """ # old code (using for-loops)
+    if (aWeights == None) or (len(aWeights) == 0):
+        aWeights = np.full(N, 1.0)
     aCenter_f = np.zeros(3)
     aCenter_m = np.zeros(3)
     sum_weights = 0.0
@@ -65,6 +60,12 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
         sum_weights += aWeights[n]
     """
     # new code (avoiding for-loops)
+    #convert weights into array
+    if (aWeights == None) or (len(aWeights) == 0):
+        aWeights = np.full((N,1),1.0)
+    else:
+        #reshape aWeights so multiplications are done column-wise
+        aWeights = np.array(aWeights).reshape(N,1)
     aCenter_f = np.sum(aaXf_orig * aWeights, axis=0)
     aCenter_m = np.sum(aaXm_orig * aWeights, axis=0)
     sum_weights = np.sum(aWeights, axis=0)
