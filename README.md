@@ -65,7 +65,7 @@ Equivalently, *q* is the
 A weighted version of the RMSD minimization algorithm is also available
 if the caller supplies an extra argument specifying the weight of every
 point in the cloud (*w<sub>n</sub>*).  In that case, RMSD is defined as:
-<img src="http://latex.codecogs.com/gif.latex?\large&space;RMSD=\sqrt{\left\sum_{n=1}^N\,w_n\,\sum_{i=1}^3\left|X_{ni}-\left(\sum_{j=1}^3 c R_{ij}x_{nj}+T_i\right)\right|^2\quad \middle/ \quad\sum_{n=1}^N w_n \right }"/>
+<img src="http://latex.codecogs.com/gif.latex?\large&space;RMSD=\sqrt{\left.\sum_{n=1}^N\,w_n\,\sum_{i=1}^3\left|X_{ni}-\left(\sum_{j=1}^3 c R_{ij}x_{nj}+T_i\right)\right|^2\quad \middle/ \quad\sum_{n=1}^N w_n \right.}"/>
 
 ### Scale transformations
 This function implements a more general variant of the method from this paper:
