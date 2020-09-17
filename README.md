@@ -49,6 +49,10 @@ from either cloud correspond.  Instead, it infers them from the order of the
 arrays.  (It assumes that the *i'th* point from *X* corresponds to the *i'th*
 point from *x*.)
 
+*Note:* The point clouds must contain the same number of points (N).
+If you need to align point clouds of different sizes, you must use a
+different approach. (See: [link1](https://en.wikipedia.org/wiki/Point_set_registration), [link2](https://en.wikipedia.org/wiki/Iterative_closest_point), [link3](https://arxiv.org/abs/2001.07715), [link4](http://www.rbvi.ucsf.edu/Research/projects/minrms/).)
+
 ### Rotation angles, axes, and quaternions
 If the rotation angle and axis are needed, then set the *report_quaternion*
 argument to *True*. In that case, the function will return this 4-tuple instead:
