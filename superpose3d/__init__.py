@@ -276,4 +276,3 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
         return rmsd, q, aTranslate, c
     else:
         return rmsd, aaRotate, aTranslate, c
-
