@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/jewettaij/superpose3d.svg?branch=master)](./.travis.yml)
+[![Build Status](https://travis-ci.com/jewettaij/superpose3d.svg?branch=master)](https://travis-ci.com/jewettaij/superpose3d.svg?branch=master)
 [![GitHub](https://img.shields.io/github/license/jewettaij/superpose3d)](./LICENSE.md)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/superpose3d)](https://pypistats.org/packages/superpose3d)
 [![PyPI - Version](https://img.shields.io/pypi/v/superpose3d)](https://pypi.org/project/superpose3d/)
