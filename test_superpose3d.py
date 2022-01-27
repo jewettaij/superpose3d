@@ -22,12 +22,13 @@ def test_superpose3d():
     w = [1.0, 1.0, 1.0, 1.0]
     result = Superpose3D(X, xscshift, w, True)
     # Does the RMSD returned in result[0] match the RMSD calculated manually?
-    R = np.matrix(result[1])              # rotation matrix
-    T = np.matrix(result[2]).transpose()  # translation vector (3x1 matrix)
-    c = result[3]                         # scalar
+    R = np.array(result[1])              # rotation matrix
+    T = np.array(result[2]).transpose()  # translation vector (3x1 matrix)
+    c = result[3]                        # scalar
     if len(X) > 0:
-        _x = np.matrix(xscshift).transpose()
-        _xprime = c*R*_x + T
+        _x = np.array(xscshift).transpose()
+        # _xprime = c*R*_x + T   <-- syntax is depreciated
+        _xprime = c*np.matmul(R,_x) + np.outer(T, np.array([1]*len(X)))
         xprime = np.array(_xprime.transpose()) # convert to length 3 numpy array
     else:
         xprime = np.array([])

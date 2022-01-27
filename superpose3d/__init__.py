@@ -68,7 +68,7 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
         aWeights = np.array(aWeights).reshape(N,1)
     aCenter_f = np.sum(aaXf_orig * aWeights, axis=0)
     aCenter_m = np.sum(aaXm_orig * aWeights, axis=0)
-    sum_weights = np.sum(aWeights, axis=0)
+    sum_weights = np.sum(aWeights)
 
     # Subtract the centers-of-mass from the original coordinates for each object
     """ # old code (using for-loops)
