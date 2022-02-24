@@ -232,7 +232,7 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
         sum_sqr_dist = 0.0
     """
     # new code (avoiding for-loops)
-    E0 = np.sum((aaXf - c*aaXm)**2)
+    E0 = np.sum(aWeights * (aaXf - c*aaXm)**2)
     sum_sqr_dist = max(0, E0 - c * 2.0 * pPp)
 
     rmsd = 0.0

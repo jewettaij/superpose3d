@@ -10,6 +10,7 @@ def test_superpose3d():
     x=[[0,0,0],[0,1.05,0],[0,1,-1],[1,1,-1]]  # (a slightly modified rotated X)
 
     result = Superpose3D(X,x, None, False, True)
+    print('weights: '+str([1.0,1.0,1.0,1.0]))
     print(' (quaternion = '+str(result[1])+')\n')
 
     Xshifted = [ [X[i][0],X[i][1]+100, X[i][2]] for i in range(0,len(X))]
@@ -19,7 +20,7 @@ def test_superpose3d():
     # Now try again using the translated, rescaled coordinates:
 
     # now test weights, rescale, and quaternions
-    w = [1.0, 1.0, 1.0, 1.0]
+    w = [2.0, 2.0, 1.0, 1.0]
     result = Superpose3D(X, xscshift, w, True)
     # Does the RMSD returned in result[0] match the RMSD calculated manually?
     R = np.array(result[1])              # rotation matrix
@@ -35,6 +36,7 @@ def test_superpose3d():
 
     print('1st (frozen) point cloud:\n'+str(X))
     print('2nd (mobile) point cloud:\n'+str(xscshift))
+    print('weights: '+str(w))
     print('2nd (mobile) point cloud after scale(c), rotation(R), translation(T):\n' +
           str(xprime))
     print('rmsd = '+str(result[0]))
@@ -44,13 +46,15 @@ def test_superpose3d():
     print('transformation used: x_i\' = Sum_over_j c*R_ij*x_j + T_i')
 
     RMSD = 0.0
+    sum_w = 0.0
     for i in range(0, len(X)):
-        RMSD += ((X[i][0] - xprime[i][0])**2 +
-                 (X[i][1] - xprime[i][1])**2 +
-                 (X[i][2] - xprime[i][2])**2)
+        RMSD += w[i]*((X[i][0] - xprime[i][0])**2 +
+                      (X[i][1] - xprime[i][1])**2 +
+                      (X[i][2] - xprime[i][2])**2)
+        sum_w += w[i]
 
     if len(X) > 0:
-        RMSD = sqrt(RMSD / len(X))
+        RMSD = sqrt(RMSD / sum_w)
 
     assert(abs(RMSD - result[0]) < 1.0e-6)
 
