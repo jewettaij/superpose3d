@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.com/jewettaij/superpose3d.svg?branch=master)](https://travis-ci.com/jewettaij/superpose3d.svg?branch=master)
+[![CodeQL](https://github.com/jewettaij/superpose3d/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/jewettaij/superpose3d/actions/workflows/codeql-analysis.yml)
 [![GitHub](https://img.shields.io/github/license/jewettaij/superpose3d)](./LICENSE.md)
 [![PyPI - Downloads](https://img.shields.io/pypi/dm/superpose3d)](https://pypistats.org/packages/superpose3d)
 [![PyPI - Version](https://img.shields.io/pypi/v/superpose3d)](https://pypi.org/project/superpose3d/)
