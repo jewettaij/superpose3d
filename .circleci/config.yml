@@ -11,10 +11,12 @@ jobs:
       - image: cimg/python:3.9.6
     steps:
       - checkout
-      - run
-          name: Install and run tests
+      - run:
+          name: Install
+          command: pip install -r requirements.txt
+      - run:
+          name: Run Tests
           command: |
-            pip install -r requirements.txt
             coverage run tests/test_superpose3d.py
             coverage xml
       - codecov/upload
