@@ -1,16 +1,19 @@
-# https://github.com/codecov/example-python
-
 version: 2.1
+
 orbs:
   python: circleci/python@1.5.0
-  codecov: codecov/codecov@3.0.0
+  codecov: codecov/codecov@3.2.2
 
 jobs:
   build-and-test:
-    docker:
-      - image: cimg/python:3.9.6
+    executor: python/default
+    #docker:
+    #  - image: cimg/python:3.9.6
     steps:
       - checkout
+      #- python/load-cache
+      #- python/install-deps
+      #- python/save-cache
       - run:
           name: Install
           command: pip install -r requirements.txt
@@ -26,3 +29,6 @@ workflow:
   build-test:
     jobs:
       - build-and-test
+
+# This file was adapted from:
+# https://github.com/codecov/example-python/blob/master/.circleci/config.yml
