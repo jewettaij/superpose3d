@@ -1,6 +1,7 @@
 # https://github.com/codecov/example-python
 
 version: 2.1
+orbs:
   python: circleci/python@1.5.0
   codecov: codecov/codecov@3.0.0
 
