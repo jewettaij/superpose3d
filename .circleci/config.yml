@@ -1,16 +1,20 @@
 version: 2.1
 orbs:
-  codecov: codecov/codecov@3.0.0
+  python: circleci/python@1.5.0
+  #codecov: codecov/codecov@3.0.0  <-- not needed if installing manually (below)
 
 jobs:
   build:
-    docker:
-      - image: cimg/python:3.9.6
+    #docker:
+    #  - image: cimg/python:3.9.6  <-- not needed if using python orb (above)
     steps:
       - checkout
       - run:
           name: Install
-          command: pip install -r requirements.txt
+          command: |
+          pip install -r requirements.txt
+          pip install coverage
+          pip install codecov
       - run:
           name: Run Tests
           command: |
