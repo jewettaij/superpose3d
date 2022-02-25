@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
-  python: circleci/python@1.5.0
-  #codecov: codecov/codecov@3.0.0  <-- not needed if installing manually (below)
+  #python: circleci/python@1.5.0
+  codecov: codecov/codecov@3.2.2
 
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
           command: |
             pip install -r requirements.txt
             pip install coverage
-            pip install codecov
+            #pip install codecov <-- (not needed if using the "codecov" org)
       - run:
           name: Run Tests
           command: |
