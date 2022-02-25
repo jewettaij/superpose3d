@@ -5,8 +5,9 @@ orbs:
 
 jobs:
   build:
+    executor: python/default
     #docker:
-    #  - image: cimg/python:3.9.6  <-- not needed if using python orb (above)
+    #  - image: cimg/python:3.9.6 <--not needed if using executor:python/default
     steps:
       - checkout
       - run:
