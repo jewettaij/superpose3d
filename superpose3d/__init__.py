@@ -25,16 +25,14 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     These operations should be applied to the "aaXm_orig" argument.
     This function returns a tuple containing:
       (RMSD, optimal_translation, optimal_rotation, and optimal_scale_factor)
-    This function implements a more general variant of the method from:
-    R. Diamond, (1988)
-    "A Note on the Rotational Superposition Problem", 
-    Acta Cryst. A44, pp. 211-216
+    More detailed documentation can be found in the repository's README.md file.
+    This function implements a more general variant of the method
+    described in this paper R. Diamond, (1988) Acta Cryst. A44, pp. 211-216
+      "A note on the rotational superposition problem"
+      https://doi.org/10.1107/S0108767387010535
     This version has been augmented slightly.  The version in the original 
     paper only considers rotation and translation and does not allow the 
     coordinates of either object to be rescaled (multiplication by a scalar).
-
-    (Additional documentation can be found at
-     https://pypi.org/project/superpose3d/ )
     """
 
     #convert input lists as to numpy arrays
@@ -46,7 +44,8 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
         raise ValueError ("Inputs should have the same size.")
 
     N = aaXf_orig.shape[0]
-    # Find the center of mass of each object:
+
+    # Find the center of mass of each object.
     """ # old code (using for-loops)
     if (aWeights == None) or (len(aWeights) == 0):
         aWeights = np.full(N, 1.0)
@@ -55,36 +54,26 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     sum_weights = 0.0
     for n in range(0, N):
         for d in range(0, 3):
-            aCenter_f[d] += aaXf_orig[n][d]*aWeights[n]
-            aCenter_m[d] += aaXm_orig[n][d]*aWeights[n]
+            aCenter_f[d] += aaXf_orig[n,d]*aWeights[n]
+            aCenter_m[d] += aaXm_orig[n,d]*aWeights[n]
         sum_weights += aWeights[n]
     """
-    # new code (avoiding for-loops)
-    #convert weights into array
+    # ...new code (avoiding for-loops)
+    # First convert weights into an array of the correct shape
     if (aWeights == None) or (len(aWeights) == 0):
-        aWeights = np.full((N,1),1.0)
+        aWeights = np.full((N,1), 1.0)
     else:
-        #reshape aWeights so multiplications are done column-wise
+        # reshape aWeights so multiplications are done column-wise
         aWeights = np.array(aWeights).reshape(N,1)
     aCenter_f = np.sum(aaXf_orig * aWeights, axis=0)
     aCenter_m = np.sum(aaXm_orig * aWeights, axis=0)
     sum_weights = np.sum(aWeights)
 
-    # Subtract the centers-of-mass from the original coordinates for each object
-    """ # old code (using for-loops)
-    if sum_weights != 0:
-        for d in range(0, 3):
-            aCenter_f[d] /= sum_weights
-            aCenter_m[d] /= sum_weights
-    for n in range(0, N):
-        for d in range(0, 3):
-            aaXf[n][d] = aaXf_orig[n][d] - aCenter_f[d]
-            aaXm[n][d] = aaXm_orig[n][d] - aCenter_m[d]
-    """
-    # new code (avoiding for-loops)
+    # Rescale by 1/sum_weights (compensate multiplying by the weights earlier)
     if sum_weights != 0:
         aCenter_f /= sum_weights
         aCenter_m /= sum_weights
+    # Subtract the centers-of-mass from the original coordinates for each object
     aaXf = aaXf_orig - aCenter_f
     aaXm = aaXm_orig - aCenter_m
 
@@ -94,50 +83,35 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     for n in range(0, N):
         for i in range(0, 3):
             for j in range(0, 3):
-                M[i][j] += aWeights[n] * aaXm[n][i] * aaXf[n][j]
+                M[i,j] += aWeights[n] * aaXm[n,i] * aaXf[n,j]
     """
+    # new code (avoiding for-loops)
     M = np.matmul(aaXm.T, (aaXf * aWeights))
 
     # Calculate Q (equation 17)
-
-    """ # old code (using for-loops)
-    traceM = 0.0
-    for i in range(0, 3):
-        traceM += M[i][i]
-    Q = np.empty((3,3))
-    for i in range(0, 3):
-        for j in range(0, 3):
-            Q[i][j] = M[i][j] + M[j][i]
-            if i==j:
-                Q[i][j] -= 2.0 * traceM
-    """
     Q = M + M.T - 2*np.eye(3)*np.trace(M)
 
 
     # Calculate V (equation 18)
     V = np.empty(3)
-    V[0] = M[1][2] - M[2][1];
-    V[1] = M[2][0] - M[0][2];
-    V[2] = M[0][1] - M[1][0];
+    V[0] = M[1,2] - M[2,1];
+    V[1] = M[2,0] - M[0,2];
+    V[2] = M[0,1] - M[1,0];
 
     # Calculate "P" (equation 22)
-    """ # old code (using for-loops)
-    P = np.empty((4,4))
-    for i in range(0,3):
-        for j in range(0,3):
-            P[i][j] = Q[i][j]
-    P[0][3] = V[0]
-    P[3][0] = V[0]
-    P[1][3] = V[1]
-    P[3][1] = V[1]
-    P[2][3] = V[2]
-    P[3][2] = V[2]
-    P[3][3] = 0.0
-    """
     P = np.zeros((4,4))
-    P[:3, :3] = Q
-    P[3, :3] = V
-    P[:3, 3] = V
+    P[:3, :3] = Q  # copy Q into the first 3 rows and first 3 columns of P
+    P[3, :3] = V   # copy V inot the 4th row of P
+    P[:3, 3] = V   # copy V inot the 4th column of P
+    """ # Note: The last 3 lines are equivalent to:
+    P[0,3] = V[0]
+    P[3,0] = V[0]
+    P[1,3] = V[1]
+    P[3,1] = V[1]
+    P[2,3] = V[2]
+    P[3,2] = V[2]
+    P[3,3] = 0.0
+    """
 
 
     # Calculate "p".  
@@ -164,10 +138,10 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
             if aEigenvals[i] > eval_max:
                 eval_max = aEigenvals[i]
                 i_eval_max = i
-        p[0] = aaEigenvects[0][i_eval_max]
-        p[1] = aaEigenvects[1][i_eval_max]
-        p[2] = aaEigenvects[2][i_eval_max]
-        p[3] = aaEigenvects[3][i_eval_max]
+        p[0] = aaEigenvects[0,i_eval_max]
+        p[1] = aaEigenvects[1,i_eval_max]
+        p[2] = aaEigenvects[2,i_eval_max]
+        p[3] = aaEigenvects[3,i_eval_max]
         pPp = eval_max
         """
         # new code (avoiding for-loops)
@@ -184,15 +158,15 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     # (p is in backwards-quaternion format)
 
     aaRotate = np.empty((3,3))
-    aaRotate[0][0] =  (p[0]*p[0])-(p[1]*p[1])-(p[2]*p[2])+(p[3]*p[3])
-    aaRotate[1][1] = -(p[0]*p[0])+(p[1]*p[1])-(p[2]*p[2])+(p[3]*p[3])
-    aaRotate[2][2] = -(p[0]*p[0])-(p[1]*p[1])+(p[2]*p[2])+(p[3]*p[3])
-    aaRotate[0][1] = 2*(p[0]*p[1] - p[2]*p[3]);
-    aaRotate[1][0] = 2*(p[0]*p[1] + p[2]*p[3]);
-    aaRotate[1][2] = 2*(p[1]*p[2] - p[0]*p[3]);
-    aaRotate[2][1] = 2*(p[1]*p[2] + p[0]*p[3]);
-    aaRotate[0][2] = 2*(p[0]*p[2] + p[1]*p[3]);
-    aaRotate[2][0] = 2*(p[0]*p[2] - p[1]*p[3]);
+    aaRotate[0,0] =  (p[0]*p[0])-(p[1]*p[1])-(p[2]*p[2])+(p[3]*p[3])
+    aaRotate[1,1] = -(p[0]*p[0])+(p[1]*p[1])-(p[2]*p[2])+(p[3]*p[3])
+    aaRotate[2,2] = -(p[0]*p[0])-(p[1]*p[1])+(p[2]*p[2])+(p[3]*p[3])
+    aaRotate[0,1] = 2*(p[0]*p[1] - p[2]*p[3]);
+    aaRotate[1,0] = 2*(p[0]*p[1] + p[2]*p[3]);
+    aaRotate[1,2] = 2*(p[1]*p[2] - p[0]*p[3]);
+    aaRotate[2,1] = 2*(p[1]*p[2] + p[0]*p[3]);
+    aaRotate[0,2] = 2*(p[0]*p[2] + p[1]*p[3]);
+    aaRotate[2,0] = 2*(p[0]*p[2] - p[1]*p[3]);
 
     # Alternatively, in modern python versions, this code also works:
     """
@@ -209,8 +183,8 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
         WaxaiXai = 0.0
         for a in range(0, N):
             for i in range(0, 3):
-                Waxaixai += aWeights[a] * aaXm[a][i] * aaXm[a][i]
-                WaxaiXai += aWeights[a] * aaXm[a][i] * aaXf[a][i]
+                Waxaixai += aWeights[a] * aaXm[a,i] * aaXm[a,i]
+                WaxaiXai += aWeights[a] * aaXm[a,i] * aaXf[a,i]
         """
         # new code (avoiding for-loops)
         Waxaixai = np.sum(aWeights * aaXm ** 2)
@@ -225,8 +199,7 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     E0 = 0.0
     for n in range(0, N):
         for d in range(0, 3):
-            # (remember to include the scale factor "c" that we inserted)
-            E0 += aWeights[n] * ((aaXf[n][d] - c*aaXm[n][d])**2)
+            E0 += aWeights[n] * ((aaXf[n,d] - c*aaXm[n,d])**2)
     sum_sqr_dist = E0 - c*2.0*pPp
     if sum_sqr_dist < 0.0: #(edge case due to rounding error)
         sum_sqr_dist = 0.0
@@ -256,7 +229,7 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
     for i in range(0,3):
         aTranslate[i] = aCenter_f[i]
         for j in range(0,3):
-            aTranslate[i] -= c*aaRotate[i][j]*aCenter_m[j]
+            aTranslate[i] -= c*aaRotate[i,j]*aCenter_m[j]
     """
     # new code (avoiding for-loops)
     aTranslate = aCenter_f - np.matmul(c*aaRotate,aCenter_m).T.reshape(3,)
