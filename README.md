@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/jewettaij/superpose3d.svg?branch=master)](https://travis-ci.com/jewettaij/superpose3d.svg?branch=master)
+[![CircleCI](https://img.shields.io/circleci/build/github/jewettaij/superpose3d/main)](https://circleci.com/gh/jewettaij/superpose3d)
 [![codecov](https://codecov.io/gh/jewettaij/superpose3d/branch/master/graph/badge.svg)](https://codecov.io/gh/jewettaij/superpose3d)
 [![CodeQL](https://github.com/jewettaij/superpose3d/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/jewettaij/superpose3d/actions/workflows/codeql-analysis.yml)
 [![GitHub](https://img.shields.io/github/license/jewettaij/superpose3d)](./LICENSE.md)
