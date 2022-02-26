@@ -13,6 +13,7 @@ def test_superpose3d():
     print('weights: '+str([1.0,1.0,1.0,1.0]))
     print(' (quaternion = '+str(result[1])+')\n')
 
+    Xshifted = [ [X[i][0],X[i][1]+100, X[i][2]] for i in range(0,len(X))]
     xscaled  = [ [2*x[i][0],2*x[i][1],    2*x[i][2]] for i in range(0,len(x))]
     xscshift = [ [2*x[i][0],2*x[i][1]+200,2*x[i][2]] for i in range(0,len(x))]
 
