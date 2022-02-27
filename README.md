@@ -87,7 +87,6 @@ Note that if you enable scale transformations (i.e. if *allow_rescale=True*), yo
 ## Installation using pip
 
     pip install .
-    pip install -r requirements.txt
 
 Later, you can uninstall superpose3d using:
 
