@@ -30,8 +30,9 @@ Superpose3D() takes two lists (or numpy arrays) of xyz coordinates
 (*of the same length*, **N**) representing two ordered sets of points
 ("clouds", **X** and **x**).
 Treating them as rigid objects, "Superpose3D()" attempts to superimpose
-them using **rotations**, **translations**, and (optionally) **scale**
-transformations in order to minimize the root-mean-squared-distance (RMSD)
+them using **rotations**, **translations**,
+~~and (optionally) **scale** transformations~~
+in order to minimize the root-mean-squared-distance (RMSD)
 between corresponding points from either cloud, where RMSD is defined as:
 
 <img src="http://latex.codecogs.com/gif.latex?\large&space;RMSD=\sqrt{\,\frac{1}{N}\,\sum_{n=1}^N\,\,\sum_{i=1}^3 \left|X_{ni}-\left(\sum_{j=1}^3 cR_{ij}x_{nj}+T_i\right)\right|^2}"/>
@@ -74,15 +75,19 @@ point in the cloud (*w<sub>n</sub>*).  In that case, RMSD is defined as:
 
 <img src="http://latex.codecogs.com/gif.latex?\large&space;RMSD=\sqrt{\left.\sum_{n=1}^N\,w_n\,\sum_{i=1}^3\left|X_{ni}-\left(\sum_{j=1}^3 c R_{ij}x_{nj}+T_i\right)\right|^2\quad \middle/ \quad\sum_{n=1}^N w_n \right.}"/>
 
-### Scale transformations
+### Algorithm
+
 This function implements a more general variant of the method from this paper:
 R. Diamond, (1988)
 "A Note on the Rotational Superposition Problem",
  Acta Cryst. A44, pp. 211-216.
 
-This version has been augmented slightly to support scale transformations.  (I.E. multiplication by scalars.  This can be useful for the registration of two different annotated volumetric 3-D images of the same object taken at different magnifications.)
+### Scale transformations <-- NOT WORKING (2022-3-07)
 
-Note that if you enable scale transformations (i.e. if *allow_rescale=True*), you should be wary if the function returns a negative **c** value.  Negative **c** values correspond to inversions (reflections).  For this reason, if you are using this function to compare the conformations of molecules, you should probably set *allow_rescale=False*.  This will prevent matching a molecule with its stereoenantiomer.
+***Note: The scale transformation feature described below [does not work](https://github.com/jewettaij/superpose3d/issues/3). Please ignore the next paragraph. -Andrew 2022-3-07.***
+~~This version has been augmented slightly to support scale transformations.  (I.E. multiplication by scalars.  This can be useful for the registration of two different annotated volumetric 3-D images of the same object taken at different magnifications.)~~
+
+~~Note that if you enable scale transformations (i.e. if *allow_rescale=True*), you should be wary if the function returns a negative **c** value.  Negative **c** values correspond to inversions (reflections).  For this reason, if you are using this function to compare the conformations of molecules, you should probably set *allow_rescale=False*.  This will prevent matching a molecule with its stereoenantiomer.~~
 
 ## Installation using pip
 
