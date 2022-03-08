@@ -84,7 +84,8 @@ R. Diamond, (1988)
 
 ### Scale transformations <-- NOT WORKING (2022-3-07)
 
-***Note: The scale transformation feature described below [does not work](https://github.com/jewettaij/superpose3d/issues/3). Please ignore the next paragraph. -Andrew 2022-3-07.***
+***Note: The scale transformation feature described below [does not work](https://github.com/jewettaij/superpose3d/issues/3). Please ignore the next paragraph. This will get fixed soon. -Andrew 2022-3-07.***
+
 ~~This version has been augmented slightly to support scale transformations.  (I.E. multiplication by scalars.  This can be useful for the registration of two different annotated volumetric 3-D images of the same object taken at different magnifications.)~~
 
 ~~Note that if you enable scale transformations (i.e. if *allow_rescale=True*), you should be wary if the function returns a negative **c** value.  Negative **c** values correspond to inversions (reflections).  For this reason, if you are using this function to compare the conformations of molecules, you should probably set *allow_rescale=False*.  This will prevent matching a molecule with its stereoenantiomer.~~
