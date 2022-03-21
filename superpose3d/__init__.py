@@ -10,6 +10,7 @@ Note: The original version of this code contained for-loops.  Newer versions of
 
 import numpy as np
 from numpy import linalg as LA
+from math import *
 
 def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
                 aaXm_orig,   # <-- coordinates for the "mobile" object
@@ -183,13 +184,12 @@ def Superpose3D(aaXf_orig,   # <-- coordinates for the "frozen" object
         WaxaiXai = 0.0
         for a in range(0, N):
             for i in range(0, 3):
-                Waxaixai += aWeights[a] * aaXm[a,i] * aaXm[a,i]
-                WaxaiXai += aWeights[a] * aaXm[a,i] * aaXf[a,i]
+                Waxaixai += aWeights[a,0] * aaXm[a,i] * aaXm[a,i]
+                WaxaiXai += aWeights[a,0] * aaXm[a,i] * aaXf[a,i]
         """
         # new code (avoiding for-loops)
-        Waxaixai = np.sum(aWeights * aaXm ** 2)
-        WaxaiXai = np.sum(aWeights * aaXf ** 2)
-
+        Waxaixai = np.sum(aWeights * aaXm * aaXm)
+        WaxaiXai = np.sum(aWeights * aaXm * aaXf)
         c = (WaxaiXai + pPp) / Waxaixai
 
     # Finally compute the RMSD between the two coordinate sets:

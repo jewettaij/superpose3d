@@ -31,7 +31,7 @@ Superpose3D() takes two lists (or numpy arrays) of xyz coordinates
 ("clouds", **X** and **x**).
 Treating them as rigid objects, "Superpose3D()" attempts to superimpose
 them using **rotations**, **translations**,
-~~and (optionally) **scale** transformations~~
+and (optionally) **scale** transformations
 in order to minimize the root-mean-squared-distance (RMSD)
 between corresponding points from either cloud, where RMSD is defined as:
 
@@ -82,13 +82,11 @@ R. Diamond, (1988)
 "A Note on the Rotational Superposition Problem",
  Acta Cryst. A44, pp. 211-216.
 
-### Scale transformations <-- NOT WORKING (2022-3-07)
+### Scale transformations
 
-***Note: The scale transformation feature described below [does not work](https://github.com/jewettaij/superpose3d/issues/3). Please ignore the next paragraph. This will get fixed soon. -Andrew 2022-3-07.***
+This version has been augmented slightly to support scale transformations.  (I.E. multiplication by scalars.  This can be useful for the registration of two different annotated volumetric 3-D images of the same object taken at different magnifications.)
 
-~~This version has been augmented slightly to support scale transformations.  (I.E. multiplication by scalars.  This can be useful for the registration of two different annotated volumetric 3-D images of the same object taken at different magnifications.)~~
-
-~~Note that if you enable scale transformations (i.e. if *allow_rescale=True*), you should be wary if the function returns a negative **c** value.  Negative **c** values correspond to inversions (reflections).  For this reason, if you are using this function to compare the conformations of molecules, you should probably set *allow_rescale=False*.  This will prevent matching a molecule with its stereoenantiomer.~~
+Note that if you enable scale transformations (i.e. if *allow_rescale=True*), you should be wary if the function returns a negative **c** value.  Negative **c** values correspond to inversions (reflections).  For this reason, if you are using this function to compare the conformations of molecules, you should probably set *allow_rescale=False*.  This will prevent matching a molecule with its stereoenantiomer.
 
 ## Installation using pip
 
