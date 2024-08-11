@@ -47,14 +47,15 @@ This function returns a 4-tuple containing the optimal values of:
 ```
    (RMSD, R, T, c)
 ```
-*Note:* This function does not attempt to determine *which* pairs of points
+NOTE: The point clouds must contain the same number of points (N).
+
+NOTE: This function does not attempt to determine *which* pairs of points
 from either cloud correspond.  Instead, it infers them from the order of the
 arrays.  (It assumes that the *i'th* point from *X* corresponds to the *i'th*
 point from *x*.)
 
-*Note:* The point clouds must contain the same number of points (N).
-If the number of points in either cloud is not the same, you must use a
-different approach. (See: [link1](https://en.wikipedia.org/wiki/Point_set_registration), [link2](https://en.wikipedia.org/wiki/Iterative_closest_point), [link3](https://arxiv.org/abs/2001.07715), [link4](http://www.rbvi.ucsf.edu/Research/projects/minrms/).)
+NOTE: More generally, the (open3d)[https://www.open3d.org/] python [module](https://pypi.org/project/open3d/) supports the IPC algorithm, and works with unordered point clouds of arbitrary size.  (Usage example [here](https://github.com/jewettaij/superpose3d/issues/5). *Also see: [link1](https://en.wikipedia.org/wiki/Point_set_registration), [link2](https://en.wikipedia.org/wiki/Iterative_closest_point), [link3](https://arxiv.org/abs/2001.07715), [link4](http://www.rbvi.ucsf.edu/Research/projects/minrms/).*)
+
 
 ### Rotation angles, axes, and quaternions
 If the rotation angle and axis are needed, then set the *report_quaternion*
