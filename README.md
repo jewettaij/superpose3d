@@ -28,7 +28,7 @@ def Superpose3D(X,    # <-- Nx3 array of coords for the "frozen" point cloud
 Superpose3D() takes two lists (or numpy arrays) of xyz coordinates
 (*of the same length*, **N**) representing two ordered sets of points
 ("clouds", **X** and **x**).
-Treating them as rigid objects, "Superpose3D()" attempts to superimpose
+Treating them as rigid objects, "Superpose3D()" superimposes
 them using **rotations**, **translations**,
 and (optionally) **scale** transformations
 in order to minimize the root-mean-squared-distance (RMSD)
