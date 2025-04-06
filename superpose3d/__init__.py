@@ -41,18 +41,18 @@ def Superpose3D(aaXf_original: Sequence[float],   # <-- coordinates for the "fro
 
     # Convert input lists as to numpy arrays
 
-    aaXf_orig: NDArray = np.array(aaXf_original)
-    aaXm_orig: NDArray = np.array(aaXm_original)
+    aaXf_orig = np.array(aaXf_original)
+    aaXm_orig = np.array(aaXm_original)
 
     if aaXf_orig.shape[0] != aaXm_orig.shape[0]:
         raise ValueError ("Inputs should have the same size.")
 
-    N: int = aaXf_orig.shape[0]
+    N = aaXf_orig.shape[0]
 
     # Find the center of mass of each object.
     # ...new code (avoiding for-loops)
     # First convert weights into an array of the correct shape
-    aWeights: NDArray = np.full((N, 1), 1.0)
+    aWeights = np.full((N, 1), 1.0)
     if (aWeights_original is not None) and (len(aWeights_original) != 0):
         aWeights = np.array(aWeights_original).reshape(N, 1)
     aCenter_f: NDArray = np.sum(aaXf_orig * aWeights, axis=0)
@@ -76,11 +76,11 @@ def Superpose3D(aaXf_original: Sequence[float],   # <-- coordinates for the "fro
         aCenter_f /= sum_weights
         aCenter_m /= sum_weights
     # Subtract the centers-of-mass from the original coordinates for each object
-    aaXf: NDArray = aaXf_orig - aCenter_f
-    aaXm: NDArray = aaXm_orig - aCenter_m
+    aaXf = aaXf_orig - aCenter_f
+    aaXm = aaXm_orig - aCenter_m
 
     # Calculate the "M" array from the Diamond paper (equation 16)
-    M: NDArray = np.matmul(aaXm.T, (aaXf * aWeights))
+    M = np.matmul(aaXm.T, (aaXf * aWeights))
     """ # For reference, here's the same code using for-loops
     M = np.zeros((3,3))
     for n in range(0, N):
@@ -90,16 +90,16 @@ def Superpose3D(aaXf_original: Sequence[float],   # <-- coordinates for the "fro
     """
 
     # Calculate Q (equation 17)
-    Q: NDArray = M + M.T - 2*np.eye(3)*np.trace(M)
+    Q = M + M.T - 2*np.eye(3)*np.trace(M)
 
     # Calculate V (equation 18)
-    V: NDArray = np.empty(3)
+    V = np.empty(3)
     V[0] = M[1,2] - M[2,1]
     V[1] = M[2,0] - M[0,2]
     V[2] = M[0,1] - M[1,0]
 
     # Calculate "P" (equation 22)
-    P: NDArray = np.zeros((4,4))
+    P = np.zeros((4,4))
     P[:3, :3] = Q  # copy Q into the first 3 rows and first 3 columns of P
     P[3, :3] = V   # copy V into the 4th row of P
     P[:3, 3] = V   # copy V into the 4th column of P
@@ -109,7 +109,7 @@ def Superpose3D(aaXf_original: Sequence[float],   # <-- coordinates for the "fro
     # "p" contains the optimal rotation (in backwards-quaternion format)
     # (Note: A discussion of various quaternion conventions is included below.)
     # First, specify the default value for p:
-    p: NDArray = np.zeros(4)
+    p = np.zeros(4)
     p[3] = 1.0           # p = [0,0,0,1]    default value
     pPp: float = 0.0            # = p^T * P * p    (zero by default)
     singular: bool = (N < 2)   # (it doesn't make sense to rotate a single point)
