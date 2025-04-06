@@ -81,9 +81,9 @@ https://github.com/jewettaij/superpose3d_cpp
 
   url='https://github.com/jewettaij/superpose3d',
 
-  download_url='https://github.com/jewettaij/superpose3d/archive/v1.4.1.zip',
+  download_url='https://github.com/jewettaij/superpose3d/archive/v1.5.0.zip',
 
-  version='1.4.1',
+  version='1.5.0',
 
   install_requires=[
       'numpy',
