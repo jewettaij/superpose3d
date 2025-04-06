@@ -84,3 +84,8 @@ ENV/
 # text-editor temporary files:
 *~
 
+# VSCode
+.vscode
+
+# mypy type checker:
+.mypy_cache
