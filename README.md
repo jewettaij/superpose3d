@@ -1,7 +1,7 @@
 [![CircleCI](https://img.shields.io/circleci/build/github/jewettaij/superpose3d/master)](https://circleci.com/gh/jewettaij/superpose3d)
 [![codecov](https://codecov.io/gh/jewettaij/superpose3d/branch/master/graph/badge.svg)](https://codecov.io/gh/jewettaij/superpose3d)
 [![GitHub](https://img.shields.io/github/license/jewettaij/superpose3d)](./LICENSE.md)
-[![PyPI - Downloads](https://img.shields.io/pypi/dm/superpose3d)](https://pypistats.org/packages/superpose3d)
+[![PyPI Downloads](https://img.shields.io/pepy/dt/superpose3d)](https://pepy.tech/projects/superpose3d)
 [![PyPI - Version](https://img.shields.io/pypi/v/superpose3d)](https://pypi.org/project/superpose3d/)
 [![python-versions](https://img.shields.io/pypi/pyversions/superpose3d.svg)](https://pypi.org/project/superpose3d/)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/jewettaij/superpose3d)]()
